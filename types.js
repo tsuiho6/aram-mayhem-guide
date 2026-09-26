@@ -16,6 +16,16 @@
 
 /** @typedef {string|BuildItem} BuildItemRef */
 
+/** @typedef {"start"|"core1"|"boots"|"core2"|"core3"|"late"} BuildStageKey */
+
+/**
+ * @typedef {Object} BuildStage
+ * @property {BuildStageKey} key
+ * @property {string} label
+ * @property {BuildItemRef[]} items
+ * @property {string} [note]
+ */
+
 /**
  * @typedef {Object} DecisionAvoidItem
  * @property {number|string} id
@@ -71,6 +81,7 @@
  * @property {BuildItemRef[]} items
  * @property {string} note
  * @property {{winRate:string,pickRate:string,sample:number}|null} [metric]
+ * @property {BuildStage[]} [stages]
  */
 
 /**

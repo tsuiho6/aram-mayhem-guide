@@ -783,6 +783,40 @@ function decisionItemCard(item, label, reason) {
   return `<article class="decision-buy-card"><span class="decision-order">${label}</span>${itemMarkup(item)}<small>${reason}</small></article>`;
 }
 
+const bootItemIds = new Set([3006, 3008, 3020, 3047, 3111, 3158]);
+
+/** @param {BuildItemRef} item */
+function isBootItem(item) {
+  const itemId = typeof item === "object" ? item.id : itemIds[item];
+  return bootItemIds.has(Number(itemId)) || /靴|胫甲/.test(decisionItemName(item));
+}
+
+/** @param {BuildItemRef[]} items @param {"route"|"synergy"} mode */
+function buildStageEntries(items, mode = "route") {
+  if (mode === "synergy") {
+    return items.map((item, index) => ({
+      key: index === 0 ? "core1" : "core2",
+      label: index === 0 ? "联动首件" : "联动后续",
+      items: [item],
+    }));
+  }
+  const boots = items.filter(isBootItem);
+  const coreItems = items.filter((item) => !isBootItem(item));
+  const stages = [{ key: "start", label: "起手装备", items: [], note: "当前统计快照未单独记录起手组件。" }];
+  if (coreItems[0]) stages.push({ key: "core1", label: "第一件核心装", items: [coreItems[0]] });
+  if (boots.length) stages.push({ key: "boots", label: "鞋子", items: boots });
+  if (coreItems[1]) stages.push({ key: "core2", label: "第二件装备", items: [coreItems[1]] });
+  if (coreItems[2]) stages.push({ key: "core3", label: "第三件装备", items: [coreItems[2]] });
+  if (coreItems.length > 3) stages.push({ key: "late", label: "后期替换装备", items: coreItems.slice(3) });
+  return stages;
+}
+
+/** @param {BuildItemRef[]} items @param {"route"|"synergy"} [mode] @param {import("./types.js").BuildStage[]} [explicitStages] */
+function buildStageMarkup(items, mode = "route", explicitStages) {
+  const stages = explicitStages?.length ? explicitStages : buildStageEntries(items, mode);
+  return `<div class="build-stage-list">${stages.map((stage) => `<div class="build-stage ${stage.items.length ? "" : "empty"}"><span>${stage.label}</span>${stage.items.length ? `<div class="item-chips">${stage.items.map(itemMarkup).join("")}</div>` : `<strong>当前快照未记录</strong>`}${stage.note ? `<small>${stage.note}</small>` : ""}</div>`).join("")}</div>`;
+}
+
 /** @param {AugmentBuildGuide} guide */
 function augmentBuildGuideMarkup(guide) {
   const requiredAugments = guide.requiredAugments || [];
@@ -792,7 +826,7 @@ function augmentBuildGuideMarkup(guide) {
       <div class="synergy-guide-head"><strong>${guide.title}</strong><b class="tier violet">${guide.tier}</b></div>
       <div class="synergy-trigger"><span>触发海克斯</span>${requiredAugments.map((augment) => `<em>${augment}</em>`).join("")}</div>
       ${synergyAugments.length ? `<div class="synergy-trigger secondary"><span>联动海克斯</span>${synergyAugments.map((augment) => `<em>${augment}</em>`).join("")}</div>` : ""}
-      <div class="item-chips">${guide.items.map(itemMarkup).join("")}</div>
+      ${buildStageMarkup(guide.items, "synergy")}
       <p>${guide.note}</p>
       <small>${guide.sourceType} · <a href="${guide.source}" target="_blank" rel="noreferrer">查看原文</a></small>
     </article>
@@ -968,8 +1002,9 @@ function renderDetail() {
     <p class="detail-summary">${hero.note}</p>
     <h4>海克斯优先级</h4>
     <div class="augment-stack">${hero.coreAugments.map((item) => `<div class="augment-item"><b class="mini-tier ${item.rarity === "棱彩" ? "ss" : item.rarity === "黄金" ? "s" : ""}">${item.rarity || item.tier || "—"}</b><span><strong>${item.name}</strong><small>${item.note || `${item.winRate || "—"} 胜率 · ${item.sample || 0} 局 · 选择率 ${item.pickRate || "—"}`}</small></span></div>`).join("")}</div>
-    <h4>出装决策</h4>
-    <div class="decision-table">${hero.builds.map((build) => `<div class="decision-row"><strong>${build.label}</strong><span class="item-chips">${build.items.map(itemMarkup).join("")}</span><small>${build.note}</small></div>`).join("")}</div>
+    <h4>出装顺序</h4>
+    <div class="build-order-note">当前统计快照主要记录核心装备组合；页面按条目顺序推导购买阶段，未记录的起手装不会强行补写。</div>
+    <div class="decision-table">${hero.builds.map((build) => `<div class="decision-row"><strong>${build.label}</strong>${buildStageMarkup(build.items, "route", build.stages)}<small>${build.note}</small></div>`).join("")}</div>
     ${synergyGuides.length ? `<h4>海克斯联动出装</h4><div class="synergy-intro">只有拿到对应海克斯时才参考；以下为公开编辑攻略，不等同于联合胜率统计。</div><div class="synergy-stack">${synergyGuides.map(augmentBuildGuideMarkup).join("")}</div>` : ""}
     <div class="detail-footnote">数据状态：${sourceStatus}。${hero.source ? ` <a href="${hero.source}" target="_blank" rel="noreferrer">查看该英雄原始快照</a>` : ""}</div>
   `;
