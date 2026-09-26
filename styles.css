@@ -13,6 +13,7 @@
   --gold: #d5b36c;
   --violet: #a99bc8;
   --pink: #d78ab2;
+  --wallpaper-url: url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Lissandra_0.jpg");
   font-family: "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
 }
 
@@ -24,6 +25,8 @@ body {
   margin: 0;
   min-width: 320px;
   background:
+    linear-gradient(180deg, rgba(7, 12, 20, .68) 0%, rgba(8, 14, 23, .83) 48%, rgba(9, 14, 21, .97) 100%),
+    var(--wallpaper-url) center top / cover fixed no-repeat,
     radial-gradient(ellipse at 14% -8%, rgba(34, 105, 133, .2), transparent 34%),
     radial-gradient(ellipse at 88% 8%, rgba(76, 55, 112, .16), transparent 30%),
     linear-gradient(180deg, #0a111b 0%, #0d151f 52%, #0c131b 100%);
@@ -70,7 +73,7 @@ button { cursor: pointer; }
 .patch-pill { margin-left: auto; color: var(--muted); font-size: 12px; white-space: nowrap; }
 .patch-pill span, .note-dot { display: inline-block; width: 7px; height: 7px; margin-right: 8px; border-radius: 50%; background: #82b48e; }
 
-.intro-row { display: flex; align-items: end; justify-content: space-between; gap: 30px; padding: 62px 0 44px; border-bottom: 1px solid var(--line); }
+.intro-row { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-top: 16px; padding: 52px 24px 38px; border: 1px solid rgba(130,180,194,.2); border-radius: 6px; background: linear-gradient(90deg, rgba(10,18,29,.94) 0%, rgba(10,18,29,.76) 55%, rgba(10,18,29,.48) 100%), var(--wallpaper-url) center 32% / cover no-repeat; }
 .eyebrow { color: var(--faint); font-size: 11px; font-weight: 600; letter-spacing: .06em; }
 .intro-row h1 { margin: 15px 0 13px; font-size: clamp(32px, 4.4vw, 48px); line-height: 1.12; letter-spacing: -.04em; }
 .intro-row h1 em { color: var(--cyan); font-style: normal; }
@@ -352,7 +355,7 @@ button { cursor: pointer; }
   .topnav { flex: 1; justify-content: end; flex-wrap: wrap; gap: 10px 14px; }
   .topnav a { font-size: 11px; }
   .brand small { display: none; }
-  .intro-row { display: block; padding: 44px 0 30px; }
+  .intro-row { display: block; padding: 44px 18px 30px; }
   .intro-note { margin-top: 24px; }
   .control-bar { align-items: stretch; flex-wrap: wrap; }
   .search-box { flex-basis: 100%; max-width: none; }
