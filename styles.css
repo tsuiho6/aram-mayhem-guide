@@ -1,9 +1,9 @@
 :root {
   color-scheme: dark;
   --bg: #0d131c;
-  --surface: #141d29;
-  --surface-2: #1a2635;
-  --surface-3: #223144;
+  --surface: rgba(20, 29, 41, .94);
+  --surface-2: rgba(26, 38, 53, .96);
+  --surface-3: rgba(34, 49, 68, .96);
   --line: rgba(177, 203, 231, 0.12);
   --line-strong: rgba(141, 174, 198, 0.34);
   --text: #edf1f4;
@@ -19,10 +19,39 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
+  position: relative;
+  isolation: isolate;
   margin: 0;
   min-width: 320px;
-  background: var(--bg);
+  background:
+    radial-gradient(ellipse at 14% -8%, rgba(34, 105, 133, .2), transparent 34%),
+    radial-gradient(ellipse at 88% 8%, rgba(76, 55, 112, .16), transparent 30%),
+    linear-gradient(180deg, #0a111b 0%, #0d151f 52%, #0c131b 100%);
   color: var(--text);
+}
+body::before {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  background-image:
+    linear-gradient(30deg, rgba(130,180,194,.045) 12%, transparent 12.5%, transparent 87%, rgba(130,180,194,.045) 87.5%),
+    linear-gradient(150deg, rgba(130,180,194,.045) 12%, transparent 12.5%, transparent 87%, rgba(130,180,194,.045) 87.5%),
+    linear-gradient(30deg, rgba(130,180,194,.045) 12%, transparent 12.5%, transparent 87%, rgba(130,180,194,.045) 87.5%),
+    linear-gradient(150deg, rgba(130,180,194,.045) 12%, transparent 12.5%, transparent 87%, rgba(130,180,194,.045) 87.5%),
+    linear-gradient(60deg, rgba(75,120,145,.035) 25%, transparent 25.5%, transparent 75%, rgba(75,120,145,.035) 75%);
+  background-position: 0 0, 0 0, 36px 62px, 36px 62px, 0 0;
+  background-size: 72px 124px;
+  content: "";
+  opacity: .55;
+  pointer-events: none;
+}
+body::after {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 42%, rgba(3, 7, 12, .46) 100%);
+  content: "";
+  pointer-events: none;
 }
 a { color: inherit; text-decoration: none; }
 button, input, select { font: inherit; }
