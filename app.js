@@ -7,6 +7,27 @@
 
 import { championSeeds, augmentSeeds } from "./data/catalog.js";
 
+const traditionalToSimplified = new Map(Object.entries({
+  "萬": "万", "與": "与", "專": "专", "業": "业", "絲": "丝", "兩": "两", "為": "为", "麗": "丽", "舉": "举", "麼": "么", "義": "义", "烏": "乌", "樂": "乐", "書": "书", "買": "买", "亂": "乱", "爭": "争", "亞": "亚", "產": "产", "複": "复", "儀": "仪", "們": "们", "優": "优", "會": "会", "傳": "传", "傷": "伤", "價": "价", "儲": "储", "內": "内", "寫": "写", "軍": "军", "農": "农", "凍": "冻", "別": "别", "劃": "划", "劇": "剧", "劉": "刘", "劍": "剑", "創": "创", "剛": "刚", "勁": "劲", "動": "动", "務": "务", "勝": "胜", "勞": "劳", "勢": "势", "匯": "汇", "區": "区", "協": "协", "單": "单", "賣": "卖", "卻": "却", "厲": "厉", "參": "参", "叢": "丛", "吳": "吴", "員": "员", "嗚": "呜", "圍": "围", "國": "国", "圓": "圆", "圖": "图", "團": "团", "壓": "压", "壞": "坏", "壯": "壮", "聲": "声", "夠": "够", "夢": "梦", "夾": "夹", "奪": "夺", "奮": "奋", "婦": "妇", "學": "学", "孫": "孙", "寧": "宁", "寶": "宝", "實": "实", "審": "审", "對": "对", "導": "导", "將": "将", "尋": "寻", "屬": "属", "島": "岛", "巖": "岩", "廣": "广", "廢": "废", "廟": "庙", "廠": "厂", "張": "张", "強": "强", "彈": "弹", "從": "从", "復": "复", "誌": "志", "憂": "忧", "憑": "凭", "懶": "懒", "應": "应", "懸": "悬", "戀": "恋", "戰": "战", "戲": "戏", "戶": "户", "拋": "抛", "挾": "挟", "換": "换", "據": "据", "搖": "摇", "擊": "击", "擇": "择", "擁": "拥", "擋": "挡", "擴": "扩", "擾": "扰", "攜": "携", "敵": "敌", "數": "数", "斷": "断", "無": "无", "時": "时", "晉": "晋", "暫": "暂", "曉": "晓", "暢": "畅", "曆": "历", "條": "条", "來": "来", "極": "极", "構": "构", "標": "标", "樣": "样", "機": "机", "橫": "横", "歸": "归", "殘": "残", "殼": "壳", "毀": "毁", "氣": "气", "決": "决", "沒": "没", "沖": "冲", "況": "况", "潔": "洁", "洩": "泄", "淚": "泪", "淨": "净", "減": "减", "滿": "满", "滅": "灭", "滲": "渗", "漢": "汉", "潛": "潜", "澤": "泽", "濕": "湿", "濤": "涛", "濾": "滤", "瀏": "浏", "瀕": "濒", "災": "灾", "煉": "炼", "熱": "热", "燒": "烧", "燈": "灯", "營": "营", "爐": "炉", "爾": "尔", "牆": "墙", "狀": "状", "獨": "独", "獲": "获", "現": "现", "環": "环", "獸": "兽", "發": "发", "皺": "皱", "盜": "盗", "監": "监", "盤": "盘", "眾": "众", "確": "确", "碼": "码", "礙": "碍", "禮": "礼", "禍": "祸", "種": "种", "穩": "稳", "窮": "穷", "窺": "窥", "竄": "窜", "筆": "笔", "節": "节", "築": "筑", "範": "范", "簡": "简", "緊": "紧", "線": "线", "編": "编", "緣": "缘", "緩": "缓", "縱": "纵", "織": "织", "繼": "继", "纏": "缠", "羅": "罗", "聖": "圣", "聽": "听", "職": "职", "聯": "联", "聰": "聪", "脫": "脱", "腦": "脑", "腳": "脚", "臉": "脸", "臨": "临", "興": "兴", "舊": "旧", "艦": "舰", "艱": "艰", "艷": "艳", "藝": "艺", "葉": "叶", "蘭": "兰", "號": "号", "處": "处", "虛": "虚", "術": "术", "衛": "卫", "補": "补", "裝": "装", "褲": "裤", "規": "规", "覺": "觉", "覽": "览", "觀": "观", "訂": "订", "計": "计", "訊": "讯", "記": "记", "訴": "诉", "詞": "词", "試": "试", "該": "该", "詳": "详", "誤": "误", "說": "说", "請": "请", "談": "谈", "論": "论", "謀": "谋", "識": "识", "譯": "译", "護": "护", "譽": "誉", "讀": "读", "變": "变", "讓": "让", "貝": "贝", "財": "财", "責": "责", "貢": "贡", "貧": "贫", "貨": "货", "貪": "贪", "貫": "贯", "賊": "贼", "賓": "宾", "賢": "贤", "質": "质", "賽": "赛", "贈": "赠", "贊": "赞", "趨": "趋", "跡": "迹", "踐": "践", "踴": "踊", "車": "车", "軟": "软", "較": "较", "載": "载", "輕": "轻", "輪": "轮", "辦": "办", "辭": "辞", "達": "达", "遙": "遥", "鄰": "邻", "郵": "邮", "鄉": "乡", "醜": "丑", "鈔": "钞", "鉅": "巨", "銀": "银", "銅": "铜", "鋼": "钢", "錄": "录", "錢": "钱", "鍵": "键", "鏡": "镜", "鐘": "钟", "鐵": "铁", "鑽": "钻", "長": "长", "門": "门", "閃": "闪", "閉": "闭", "開": "开", "間": "间", "闆": "板", "闊": "阔", "陣": "阵", "陰": "阴", "陽": "阳", "隨": "随", "隱": "隐", "雜": "杂", "雙": "双", "離": "离", "難": "难", "電": "电", "霧": "雾", "靈": "灵", "靜": "静", "頂": "顶", "順": "顺", "頑": "顽", "預": "预", "頓": "顿", "顯": "显", "類": "类", "願": "愿", "顏": "颜", "風": "风", "飛": "飞", "飽": "饱", "餘": "余", "養": "养", "餓": "饿", "館": "馆", "馬": "马", "驅": "驱", "駭": "骇", "騎": "骑", "體": "体", "髮": "发", "鬥": "斗", "鬧": "闹", "魯": "鲁", "魚": "鱼", "鳥": "鸟", "鳴": "鸣", "鴻": "鸿", "鵝": "鹅", "鶴": "鹤", "麥": "麦", "黃": "黄", "點": "点", "黏": "粘", "龍": "龙", "龐": "庞", "龜": "龟", "祕": "秘", "練": "练", "煩": "烦", "鍊": "炼", "鋒": "锋", "頗": "颇", "滾": "滚", "帥": "帅", "傑": "杰", "凱": "凯", "陸": "陆", "鳳": "凤", "蘿": "萝", "喪": "丧", "賦": "赋", "壹": "一", "貳": "二", "肆": "四", "伍": "五", "柒": "七", "捌": "八", "玖": "九", "拾": "十"
+}));
+
+Object.entries({
+  "稜": "棱", "縮": "缩", "惡": "恶", "級": "级", "響": "响", "盡": "尽", "針": "针", "師": "师", "蠻": "蛮", "飲": "饮", "縛": "缚", "見": "见", "縫": "缝", "畫": "画", "維": "维", "殺": "杀", "終": "终", "純": "纯", "轉": "转", "換": "换", "瘋": "疯", "醬": "酱", "訓": "训", "獄": "狱", "蝕": "蚀", "遠": "远", "鎚": "锤", "颱": "台", "輸": "输", "揚": "扬", "頭": "头", "婭": "娅", "絕": "绝", "鍋": "锅", "俠": "侠", "恆": "恒", "連": "连", "約": "约", "鯊": "鲨", "療": "疗", "殞": "陨", "給": "给", "餘": "余", "層": "层", "砲": "炮", "紗": "纱", "勵": "励", "鏢": "镖", "縮": "缩", "場": "场", "語": "语", "適": "适", "懼": "惧", "搗": "捣", "綻": "绽", "衝": "冲", "獻": "献", "當": "当", "俠": "侠", "恆": "恒", "鯊": "鲨", "憶": "忆", "綜": "综", "擴": "扩", "潤": "润"
+}).forEach(([traditional, simplified]) => traditionalToSimplified.set(traditional, simplified));
+
+/** @param {string} value @returns {string} */
+function simplifyText(value) {
+  return [...value].map((character) => traditionalToSimplified.get(character) || character).join("").replaceAll("计画", "计划");
+}
+
+/** @param {any} value @returns {any} */
+function simplifyData(value) {
+  if (typeof value === "string") return simplifyText(value);
+  if (Array.isArray(value)) return value.map(simplifyData);
+  if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, child]) => [key, simplifyData(child)]));
+  return value;
+}
+
 /** @type {Hero[]} */
 const featuredHeroes = [
   {
@@ -578,19 +599,21 @@ function fitHeroesForAugment(name) {
 const legacyAugmentMap = new Map(legacyAugmentRankings.map((augment) => [augment.name, augment]));
 /** @type {AugmentRanking[]} */
 let augmentRankings = augmentSeeds.map((augment) => {
-  const legacy = legacyAugmentMap.get(augment.name);
+  const name = simplifyText(augment.name);
+  const legacy = legacyAugmentMap.get(name);
   return {
     ...augment,
+    name,
     strength: legacy?.strength || "—",
     tierClass: legacy?.tierClass || "",
-    heroes: legacy?.heroes || fitHeroesForAugment(augment.name),
+    heroes: legacy?.heroes?.map(simplifyText) || fitHeroesForAugment(name),
     note: legacy?.note || "26.19 目录条目；适配英雄为角色联动模板，待真实对局统计校准。",
     recommendationStatus: legacy ? "编辑草案" : "角色模板",
   };
 });
 
 const tierOrder = { SS: 0, S: 1, A: 2, B: 3, C: 4, 待定: 9 };
-const state = { query: "", role: "全部", sort: "tier", selected: "jax", scenarioHero: "jax", scenarioThreat: "frontline" };
+const state = { query: "", role: "全部", sort: "tier", selected: "jax", augmentColor: "白银", scenarioHero: "jax", scenarioHeroQuery: "", scenarioThreat: "frontline" };
 const championKeys = { jax: "Jax", yasuo: "Yasuo", teemo: "Teemo", tahm: "TahmKench", ornn: "Ornn", kaisa: "Kaisa", morgana: "Morgana", galio: "Galio", ashe: "Ashe", ahri: "Ahri", hecarim: "Hecarim", masteryi: "MasterYi", riven: "Riven", leona: "Leona", ...Object.fromEntries(championSeeds.map((champion) => [champion.id, champion.key])) };
 const championIds = { jax: 24, yasuo: 157, teemo: 17, tahm: 223, ornn: 516, kaisa: 145, morgana: 25, galio: 3, ashe: 22, ahri: 103, hecarim: 120, masteryi: 11, riven: 92, leona: 89 };
 /** @type {Record<string, number>} */
@@ -656,7 +679,9 @@ Object.entries(championIds).forEach(([heroId, championId]) => {
 const heroList = document.querySelector("#heroList");
 const detailPanel = document.querySelector("#detailPanel");
 const resultCount = document.querySelector("#resultCount");
-const scenarioHero = document.querySelector("#scenarioHero");
+const augmentTabs = document.querySelector("#augmentTabs");
+const scenarioHeroSearch = document.querySelector("#scenarioHeroSearch");
+const scenarioHeroResults = document.querySelector("#scenarioHeroResults");
 const scenarioThreat = document.querySelector("#scenarioThreat");
 const scenarioResult = document.querySelector("#scenarioResult");
 
@@ -664,7 +689,7 @@ const scenarioResult = document.querySelector("#scenarioResult");
 function avatarMarkup(hero) {
   const imageUrl = assets.championUrls[hero.id];
   const fallbackUrl = assets.championFallbackUrls[hero.id];
-  return `<span class="avatar ${hero.avatar}">${imageUrl ? `<img src="${imageUrl}" alt="${hero.name}头像" data-avatar-image data-fallback-src="${fallbackUrl || ""}" /><b class="avatar-fallback" hidden>${hero.initial}</b>` : `<b class="avatar-fallback">${hero.initial}</b>`}</span>`;
+  return `<span class="avatar ${hero.avatar}">${imageUrl ? `<img src="${imageUrl}" alt="${hero.name}头像" data-avatar-image data-fallback-src="${fallbackUrl || ""}" />` : ""}</span>`;
 }
 
 /** @param {BuildItemRef} item */
@@ -685,8 +710,6 @@ function bindAssetFallbacks() {
         return;
       }
       image.remove();
-      const fallback = image.parentElement?.querySelector(".avatar-fallback");
-      if (fallback) fallback.hidden = false;
     });
   });
   document.querySelectorAll("[data-item-image]").forEach((image) => {
@@ -700,7 +723,7 @@ function bindAssetFallbacks() {
 
 /** @param {Hero} hero */
 function heroText(hero) {
-  return [hero.name, hero.alias, hero.note, ...hero.roles, ...hero.tags, ...hero.coreAugments.map((item) => item.name), ...hero.builds.flatMap((build) => [build.label, ...build.items, build.note])].join(" ").toLowerCase();
+  return [hero.name, hero.alias, hero.note, ...hero.roles, ...hero.tags, ...hero.coreAugments.map((item) => item.name), ...hero.builds.flatMap((build) => [build.label, ...build.items.map((item) => typeof item === "string" ? item : item.name), build.note])].join(" ").toLowerCase();
 }
 
 /** @param {Hero} hero */
@@ -765,23 +788,34 @@ function renderDetail() {
 function renderAugments() {
   document.querySelector("#augmentCount").textContent = augmentRankings.length;
   const groups = ["白银", "黄金", "棱彩"];
-  document.querySelector("#augmentList").innerHTML = groups.map((color) => {
-    const group = augmentRankings.filter((augment) => augment.color === color).sort((left, right) => left.rank - right.rank);
-    return `
-      <section class="augment-group">
-        <div class="augment-group-heading"><div><span class="color-badge ${color === "棱彩" ? "prismatic" : color === "黄金" ? "gold" : "silver"}">${color}</span><strong>${color}海克斯</strong></div><small>每个条目列出最适配的 3 个英雄</small></div>
-        <div class="augment-table">
-          <div class="augment-head"><span># / 海克斯</span><span>稀有度</span><span>最适配英雄</span><span>联动方向 / 状态</span></div>
-          ${group.map((augment) => `<div class="augment-row"><span class="rank-index">${String(augment.rank).padStart(3, "0")}</span><span class="augment-name"><strong>${augment.name}</strong><small>26.19 目录</small></span><span><b class="color-badge ${augment.color === "棱彩" ? "prismatic" : augment.color === "黄金" ? "gold" : "silver"}">${augment.color}</b></span><span class="augment-copy"><strong class="fit-heroes">${augment.heroes.map((hero, index) => `<em>${index + 1}. ${hero}</em>`).join("")}</strong><small>${augment.note} · ${augment.recommendationStatus}</small></span></div>`).join("")}
-        </div>
-      </section>
-    `;
-  }).join("");
+  const colorClass = (color) => color === "棱彩" ? "prismatic" : color === "黄金" ? "gold" : "silver";
+  const selectedColor = groups.includes(state.augmentColor) ? state.augmentColor : groups[0];
+  const group = augmentRankings.filter((augment) => augment.color === selectedColor).sort((left, right) => left.rank - right.rank);
+  augmentTabs.innerHTML = groups.map((color) => `<button class="augment-tab ${color === selectedColor ? "active" : ""}" data-augment-color="${color}" role="tab" aria-selected="${color === selectedColor}"><span class="color-badge ${colorClass(color)}">${color}</span><strong>${color}</strong><small>${augmentRankings.filter((augment) => augment.color === color).length} 个</small></button>`).join("");
+  document.querySelector("#augmentList").innerHTML = `
+    <section class="augment-group">
+      <div class="augment-group-heading"><div><span class="color-badge ${colorClass(selectedColor)}">${selectedColor}</span><strong>${selectedColor}海克斯</strong></div><small>每个条目列出最适配的 3 个英雄</small></div>
+      <div class="augment-table">
+        <div class="augment-head"><span># / 海克斯</span><span>稀有度</span><span>最适配英雄</span><span>联动方向 / 状态</span></div>
+        ${group.map((augment) => `<div class="augment-row"><span class="rank-index">${String(augment.rank).padStart(3, "0")}</span><span class="augment-name"><strong>${augment.name}</strong><small>26.19 目录</small></span><span><b class="color-badge ${colorClass(augment.color)}">${augment.color}</b></span><span class="augment-copy"><strong class="fit-heroes">${augment.heroes.map((hero, index) => `<em>${index + 1}. ${hero}</em>`).join("")}</strong><small>${augment.note} · ${augment.recommendationStatus}</small></span></div>`).join("")}
+      </div>
+    </section>
+  `;
+  augmentTabs.querySelectorAll("[data-augment-color]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.augmentColor = button.dataset.augmentColor;
+      renderAugments();
+    });
+  });
 }
 
 function renderScenarioHeroOptions() {
-  scenarioHero.innerHTML = heroes.map((hero) => `<option value="${hero.id}">${hero.name} · ${hero.alias}</option>`).join("");
-  scenarioHero.value = state.scenarioHero;
+  const query = state.scenarioHeroQuery.trim().toLowerCase();
+  const visible = heroes.filter((hero) => `${hero.name} ${hero.alias}`.toLowerCase().includes(query)).slice(0, 12);
+  scenarioHeroSearch.value = state.scenarioHeroQuery;
+  scenarioHeroResults.innerHTML = visible.length
+    ? visible.map((hero) => `<button class="scenario-hero-option ${hero.id === state.scenarioHero ? "selected" : ""}" data-scenario-hero="${hero.id}" role="option" aria-selected="${hero.id === state.scenarioHero}"><strong>${hero.name}</strong><small>${hero.alias} · ${hero.roles.join(" / ")}</small></button>`).join("")
+    : `<div class="scenario-no-result">没有找到这个英雄</div>`;
   renderScenarioThreatOptions();
 }
 
@@ -839,7 +873,7 @@ async function hydrateGuideData() {
   try {
     const payload = await fetch("./data/aram-mayhem-26.19.json").then((response) => response.json());
     heroes.forEach((hero) => {
-      const sourceHero = payload.champions[hero.id];
+      const sourceHero = simplifyData(payload.champions[hero.id]);
       if (!sourceHero) return;
       Object.assign(hero, sourceHero, { dataState: "统计快照", alias: hero.alias });
       championIds[hero.id] = sourceHero.sourceId;
@@ -852,7 +886,7 @@ async function hydrateGuideData() {
       .filter((augment) => augment.rarity === color)
       .sort((left, right) => Number.parseFloat(right.winRate) - Number.parseFloat(left.winRate))
       .map((augment, index) => ({
-        ...augment,
+        ...simplifyData(augment),
         color,
         rank: index + 1,
         tierClass: augment.strength === "SS" ? "" : augment.strength === "S" ? "violet" : augment.strength === "A" ? "gold" : "pink",
@@ -885,10 +919,18 @@ document.querySelectorAll("#roleFilters .filter").forEach((button) => {
   });
 });
 
-scenarioHero.addEventListener("change", (event) => {
-  state.scenarioHero = event.target.value;
+scenarioHeroSearch.addEventListener("input", (event) => {
+  state.scenarioHeroQuery = event.target.value;
+  renderScenarioHeroOptions();
+});
+
+scenarioHeroResults.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-scenario-hero]");
+  if (!button) return;
+  state.scenarioHero = button.dataset.scenarioHero;
+  state.scenarioHeroQuery = heroes.find((hero) => hero.id === state.scenarioHero)?.name || "";
   state.scenarioThreat = "frontline";
-  renderScenarioThreatOptions();
+  renderScenarioHeroOptions();
 });
 
 scenarioThreat.addEventListener("change", (event) => {

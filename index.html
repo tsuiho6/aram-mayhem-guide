@@ -23,7 +23,7 @@
           <a href="#scenarios">情境出装</a>
           <a href="#sources">数据说明</a>
         </nav>
-        <div class="patch-pill"><span></span> 26.19 · 编辑草案</div>
+        <div class="patch-pill"><span></span> 26.19 · 统计快照</div>
       </header>
 
       <main>
@@ -76,8 +76,8 @@
           </article>
           <article class="summary-card">
             <span>统计快照</span>
-            <strong>待接入</strong>
-            <small>不伪造胜率和样本</small>
+            <strong>124,527</strong>
+            <small>公开聚合对局样本</small>
           </article>
           <article class="summary-card accent-gold">
             <span>更新口径</span>
@@ -120,8 +120,9 @@
               <div class="eyebrow">AUGMENT RANKING</div>
               <h2>海克斯推荐榜</h2>
             </div>
-            <div class="section-meta"><span class="status-pill violet">26.19 统计快照</span><span>适配英雄不足处标注角色补位</span></div>
+          <div class="section-meta"><span class="status-pill violet">26.19 统计快照</span><span>适配英雄不足处标注角色补位</span></div>
           </div>
+          <div class="augment-tabs" id="augmentTabs" role="tablist" aria-label="海克斯稀有度"></div>
           <div class="augment-table" id="augmentList"></div>
         </section>
 
@@ -135,7 +136,10 @@
           </div>
           <div class="scenario-layout">
             <div class="scenario-controls">
-              <label class="select-box wide-select"><span>我的英雄</span><select id="scenarioHero"></select></label>
+              <div class="scenario-hero-picker">
+                <label class="search-box scenario-search"><span>⌕</span><input id="scenarioHeroSearch" type="search" placeholder="搜索我的英雄" autocomplete="off" /></label>
+                <div class="scenario-hero-results" id="scenarioHeroResults" role="listbox" aria-label="英雄搜索结果"></div>
+              </div>
               <label class="select-box wide-select"><span>对面威胁</span><select id="scenarioThreat"></select></label>
               <p>这里把统计主线和情境规则分开展示；情境路线用于帮助你根据对局做购买决策，不等同于阵容分层胜率。</p>
             </div>
