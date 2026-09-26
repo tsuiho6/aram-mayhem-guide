@@ -97,6 +97,7 @@ button { cursor: pointer; }
 .avatar.teal { background: linear-gradient(135deg, #178e9e, #153b68); }
 .avatar.orange { background: linear-gradient(135deg, #d8783d, #54235d); }
 .avatar.green { background: linear-gradient(135deg, #2c9a73, #163552); }
+.avatar.violet { background: linear-gradient(135deg, #8661c7, #2f245a); }
 .tier { display: inline-block; min-width: 27px; padding: 4px 6px; border-radius: 4px; color: #191923; background: var(--gold); font-size: 10px; font-weight: 800; text-align: center; }
 .tier.violet { background: var(--violet); }
 .tier.pink { background: var(--pink); }
