@@ -26,11 +26,53 @@
       "sourceRefs": ["curated-note"]
     },
     {
-        "id": "tahm",
+      "id": "tahm",
       "name": "河流之王",
       "roles": ["frontline"],
       "contentStatus": "draft",
       "sourceRefs": ["curated-note"]
+    },
+    {
+      "id": "ornn",
+      "name": "山隐之焰",
+      "roles": ["frontline", "fighter"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "kaisa",
+      "name": "虚空之女",
+      "roles": ["marksman", "mage"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "morgana",
+      "name": "堕落天使",
+      "roles": ["mage"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "galio",
+      "name": "正义巨像",
+      "roles": ["frontline", "mage"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "ashe",
+      "name": "寒冰射手",
+      "roles": ["marksman"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "ahri",
+      "name": "九尾妖狐",
+      "roles": ["mage"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
     }
   ]
 }
