@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="海克斯大乱斗英雄玩法、海克斯联动与出装路线查询库" />
+    <title>海克斯大乱斗 · 玩法库</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./">
+          <span class="brand-mark">✦</span>
+          <span>
+            <strong>海斗玩法库</strong>
+            <small>ARAM: MAYHEM FIELD GUIDE</small>
+          </span>
+        </a>
+        <nav class="topnav" aria-label="主导航">
+          <a class="active" href="#heroes">英雄库</a>
+          <a href="#augments">海克斯</a>
+          <a href="#sources">数据说明</a>
+        </nav>
+        <div class="patch-pill"><span></span> 内容版本 26.19 · 草案</div>
+      </header>
+
+      <main>
+        <section class="hero-banner">
+          <div class="eyebrow">BUILD LIBRARY / DECISION NOTES</div>
+          <h1>先看懂玩法，再决定<br /><em>这局怎么构筑。</em></h1>
+          <p>把英雄机制、海克斯联动、出装路线和对局情境整理成一套方便查阅的知识库。</p>
+          <div class="banner-actions">
+            <a class="primary-button" href="#heroes">浏览英雄玩法 <span>→</span></a>
+            <a class="text-button" href="#sources">查看数据口径</a>
+          </div>
+          <div class="banner-orbit orbit-one"></div>
+          <div class="banner-orbit orbit-two"></div>
+          <div class="banner-spark spark-one">✦</div>
+          <div class="banner-spark spark-two">·</div>
+        </section>
+
+        <section class="workspace" id="heroes">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">CHAMPION LIBRARY</div>
+              <h2>英雄玩法库</h2>
+            </div>
+            <div class="result-count" id="resultCount">4 个草案</div>
+          </div>
+
+          <div class="toolbar">
+            <label class="search-box">
+              <span>⌕</span>
+              <input id="searchInput" type="search" placeholder="搜索英雄、玩法或海克斯" />
+            </label>
+            <div class="filter-group" id="roleFilters" aria-label="英雄定位筛选">
+              <button class="filter active" data-role="全部">全部</button>
+              <button class="filter" data-role="战士">战士</button>
+              <button class="filter" data-role="法师">法师</button>
+              <button class="filter" data-role="射手">射手</button>
+              <button class="filter" data-role="前排">前排</button>
+            </div>
+          </div>
+
+          <div class="library-layout">
+            <div class="hero-grid" id="heroGrid" aria-live="polite"></div>
+            <aside class="detail-panel" id="detailPanel" aria-live="polite"></aside>
+          </div>
+        </section>
+
+        <section class="method-section" id="augments">
+          <div class="section-heading compact">
+            <div>
+              <div class="eyebrow">HOW TO READ</div>
+              <h2>推荐不是一个答案</h2>
+            </div>
+          </div>
+          <div class="method-grid">
+            <article class="method-card">
+              <span class="method-number">01</span>
+              <h3>先看海克斯改变什么</h3>
+              <p>它是强化核心技能、改变伤害类型，还是让英雄获得新的生存方式？</p>
+            </article>
+            <article class="method-card accent-card">
+              <span class="method-number">02</span>
+              <h3>再看队伍缺什么</h3>
+              <p>队伍缺前排、开团、持续伤害或反制手段时，个人最强不一定是团队最优。</p>
+            </article>
+            <article class="method-card">
+              <span class="method-number">03</span>
+              <h3>最后决定出装</h3>
+              <p>同一个海克斯，在不同敌方阵容和装备顺序下，可能对应完全不同的玩法。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="sources-section" id="sources">
+          <div>
+            <div class="eyebrow">DATA PROVENANCE</div>
+            <h2>让每个结论都能追溯</h2>
+            <p>网站会区分统计信号、版本资料和人工玩法笔记，不把不同版本或不同来源的数据混在一起。</p>
+          </div>
+          <div class="source-chips">
+            <span>版本绑定</span>
+            <span>来源标记</span>
+            <span>样本门槛</span>
+            <span>玩法编辑</span>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>海斗玩法库 · 研究版</span>
+        <span>数据与玩法仍在整理中</span>
+      </footer>
+    </div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
