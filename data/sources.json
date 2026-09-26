@@ -24,6 +24,14 @@
       "status": "planned",
       "scope": "去身份化的 Mayhem 对局统计",
       "note": "只接受带 queue、patch、region、时间范围和去重说明的快照。"
+    },
+    {
+      "id": "mayhem-public-reference",
+      "name": "公开海克斯大乱斗参考页",
+      "kind": "reference",
+      "status": "reference-only",
+      "scope": "装备名称、常见出装顺序和海克斯组合线索",
+      "note": "只用于整理候选路线，不直接导入其胜率或梯队结论；正式数据仍需版本化快照。"
     }
   ]
 }
