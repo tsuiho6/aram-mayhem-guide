@@ -16,6 +16,7 @@
 - `data/decision-rules.json` 保存快速出装决策的对面威胁标签与“不建议优先购买”规则；它们是编辑规则，不等同于阵容分层联合胜率。
 - `data/zh-cn-item-names.json` 保存统计快照中装备 ID 对应的国服正式名称，避免远程图标数据加载失败时回退到台服或繁体名称。
 - 英雄出装路线按起手、第一件核心装、鞋子、第二件、第三件和后期替换阶段展示；统计快照未记录的阶段会明确标注，不会虚构购买顺序。
+- `data/build-order-overrides.json` 保存核心英雄的明确阶段覆盖；其余英雄先用统计组合和情境路线推导，并明确标注数据边界。
 - `scripts/prepare-aram-mayhem-data.mjs` 用于从公开的 `ARAM-Mayhem-Database` 快照重新生成本地数据；源数据与本项目均不代表 Riot 官方统计。
 - `types.js` 和 `jsconfig.json` 用 JSDoc 约束 `Hero`、`HeroAugment`、`BuildRoute`、`SituationRoute`、`AugmentRanking` 等结构；`scripts/validate-data.mjs` 可在提交前检查快照完整性。
 

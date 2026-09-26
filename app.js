@@ -618,6 +618,9 @@ let augmentRankings = augmentSeeds.map((augment) => {
 /** @type {Record<string, AugmentBuildGuide[]>} */
 let augmentBuildGuides = {};
 
+/** @type {Record<string, { builds?: Record<string, { stages?: import("./types.js").BuildStage[] }> }>} */
+let buildOrderOverrides = {};
+
 /** @type {Record<string, DecisionThreatRule>} */
 let decisionRules = {};
 
@@ -791,8 +794,8 @@ function isBootItem(item) {
   return bootItemIds.has(Number(itemId)) || /靴|胫甲/.test(decisionItemName(item));
 }
 
-/** @param {BuildItemRef[]} items @param {"route"|"synergy"} mode */
-function buildStageEntries(items, mode = "route") {
+/** @param {BuildItemRef[]} items @param {"route"|"synergy"} mode @param {Hero} [hero] */
+function buildStageEntries(items, mode = "route", hero) {
   if (mode === "synergy") {
     return items.map((item, index) => ({
       key: index === 0 ? "core1" : "core2",
@@ -802,19 +805,36 @@ function buildStageEntries(items, mode = "route") {
   }
   const boots = items.filter(isBootItem);
   const coreItems = items.filter((item) => !isBootItem(item));
-  const stages = [{ key: "start", label: "起手装备", items: [], note: "当前统计快照未单独记录起手组件。" }];
+  const stages = [];
   if (coreItems[0]) stages.push({ key: "core1", label: "第一件核心装", items: [coreItems[0]] });
-  if (boots.length) stages.push({ key: "boots", label: "鞋子", items: boots });
+  if (boots.length) {
+    stages.push({ key: "boots", label: "鞋子", items: boots });
+  } else if (hero) {
+    const shoeOptions = hero.situations.flatMap((situation) => situation.items.filter(isBootItem).map((item) => ({ item, label: situation.label })));
+    const shoeItems = uniqueDecisionItems(shoeOptions.map((entry) => entry.item));
+    if (shoeItems.length) {
+      const shoeNotes = shoeItems.map((item) => {
+        const conditions = shoeOptions.filter((entry) => decisionItemKey(entry.item) === decisionItemKey(item)).map((entry) => entry.label);
+        return `${conditions.join(" / ")} → ${decisionItemName(item)}`;
+      });
+      stages.push({ key: "boots", label: "鞋子", items: shoeItems, note: `按对面威胁选择：${shoeNotes.join("；")}` });
+    }
+  }
   if (coreItems[1]) stages.push({ key: "core2", label: "第二件装备", items: [coreItems[1]] });
   if (coreItems[2]) stages.push({ key: "core3", label: "第三件装备", items: [coreItems[2]] });
   if (coreItems.length > 3) stages.push({ key: "late", label: "后期替换装备", items: coreItems.slice(3) });
   return stages;
 }
 
-/** @param {BuildItemRef[]} items @param {"route"|"synergy"} [mode] @param {import("./types.js").BuildStage[]} [explicitStages] */
-function buildStageMarkup(items, mode = "route", explicitStages) {
-  const stages = explicitStages?.length ? explicitStages : buildStageEntries(items, mode);
-  return `<div class="build-stage-list">${stages.map((stage) => `<div class="build-stage ${stage.items.length ? "" : "empty"}"><span>${stage.label}</span>${stage.items.length ? `<div class="item-chips">${stage.items.map(itemMarkup).join("")}</div>` : `<strong>当前快照未记录</strong>`}${stage.note ? `<small>${stage.note}</small>` : ""}</div>`).join("")}</div>`;
+/** @param {BuildItemRef[]} items @param {"route"|"synergy"} [mode] @param {import("./types.js").BuildStage[]} [explicitStages] @param {Hero} [hero] */
+function buildStageMarkup(items, mode = "route", explicitStages, hero) {
+  const stages = explicitStages?.length ? explicitStages.map((stage) => ({ ...stage })) : buildStageEntries(items, mode, hero);
+  if (mode === "route" && hero && !stages.some((stage) => stage.key === "boots")) {
+    const derivedBoots = buildStageEntries([], "route", hero).find((stage) => stage.key === "boots");
+    if (derivedBoots) stages.splice(Math.min(1, stages.length), 0, derivedBoots);
+  }
+  const missingStart = mode === "route" ? `<small class="build-stage-note">起手装备：当前统计快照未单独记录。</small>` : "";
+  return `<div class="build-stage-list">${stages.map((stage) => `<div class="build-stage"><span>${stage.label}</span><div class="item-chips">${stage.items.map(itemMarkup).join("")}</div>${stage.note ? `<small>${stage.note}</small>` : ""}</div>`).join("")}${missingStart}</div>`;
 }
 
 /** @param {AugmentBuildGuide} guide */
@@ -1004,7 +1024,7 @@ function renderDetail() {
     <div class="augment-stack">${hero.coreAugments.map((item) => `<div class="augment-item"><b class="mini-tier ${item.rarity === "棱彩" ? "ss" : item.rarity === "黄金" ? "s" : ""}">${item.rarity || item.tier || "—"}</b><span><strong>${item.name}</strong><small>${item.note || `${item.winRate || "—"} 胜率 · ${item.sample || 0} 局 · 选择率 ${item.pickRate || "—"}`}</small></span></div>`).join("")}</div>
     <h4>出装顺序</h4>
     <div class="build-order-note">当前统计快照主要记录核心装备组合；页面按条目顺序推导购买阶段，未记录的起手装不会强行补写。</div>
-    <div class="decision-table">${hero.builds.map((build) => `<div class="decision-row"><strong>${build.label}</strong>${buildStageMarkup(build.items, "route", build.stages)}<small>${build.note}</small></div>`).join("")}</div>
+    <div class="decision-table">${hero.builds.map((build) => `<div class="decision-row"><strong>${build.label}</strong>${buildStageMarkup(build.items, "route", build.stages, hero)}<small>${build.note}</small></div>`).join("")}</div>
     ${synergyGuides.length ? `<h4>海克斯联动出装</h4><div class="synergy-intro">只有拿到对应海克斯时才参考；以下为公开编辑攻略，不等同于联合胜率统计。</div><div class="synergy-stack">${synergyGuides.map(augmentBuildGuideMarkup).join("")}</div>` : ""}
     <div class="detail-footnote">数据状态：${sourceStatus}。${hero.source ? ` <a href="${hero.source}" target="_blank" rel="noreferrer">查看该英雄原始快照</a>` : ""}</div>
   `;
@@ -1119,14 +1139,16 @@ async function hydrateAssets() {
 
 async function hydrateGuideData() {
   try {
-    const [payload, localization, guidePayload, decisionPayload, itemLocalization] = await Promise.all([
+    const [payload, localization, guidePayload, decisionPayload, itemLocalization, buildOrderPayload] = await Promise.all([
       fetch("./data/aram-mayhem-26.19.json").then((response) => response.json()),
       fetch("./data/zh-cn-localization.json").then((response) => response.json()),
       fetch("./data/augment-build-guides.json").then((response) => response.json()),
       fetch("./data/decision-rules.json").then((response) => response.json()),
       fetch("./data/zh-cn-item-names.json").then((response) => response.json()),
+      fetch("./data/build-order-overrides.json").then((response) => response.json()),
     ]);
     augmentBuildGuides = simplifyData(guidePayload.guides || {});
+    buildOrderOverrides = simplifyData(buildOrderPayload.heroes || {});
     decisionRules = simplifyData(decisionPayload.threats || {});
     Object.assign(assets.itemNamesById, itemLocalization);
     const augmentNames = localization.entries || {};
@@ -1139,6 +1161,11 @@ async function hydrateGuideData() {
       const sourceHero = simplifyData(payload.champions[hero.id]);
       if (!sourceHero) return;
       sourceHero.coreAugments = (sourceHero.coreAugments || []).map(localizeAugment);
+      const buildOverride = buildOrderOverrides[hero.id]?.builds || {};
+      sourceHero.builds = (sourceHero.builds || []).map((build) => {
+        const override = buildOverride[build.label];
+        return override?.stages?.length ? { ...build, stages: override.stages } : build;
+      });
       const displayName = hero.name;
       const displayAlias = hero.alias;
       Object.assign(hero, sourceHero, { dataState: "统计快照", name: displayName, alias: displayAlias });

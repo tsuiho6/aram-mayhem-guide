@@ -5,10 +5,12 @@ const dataPath = fileURLToPath(new URL("../data/aram-mayhem-26.19.json", import.
 const guidePath = fileURLToPath(new URL("../data/augment-build-guides.json", import.meta.url));
 const decisionRulesPath = fileURLToPath(new URL("../data/decision-rules.json", import.meta.url));
 const itemNamePath = fileURLToPath(new URL("../data/zh-cn-item-names.json", import.meta.url));
+const buildOrderPath = fileURLToPath(new URL("../data/build-order-overrides.json", import.meta.url));
 const payload = JSON.parse(fs.readFileSync(dataPath, "utf8"));
 const guidePayload = JSON.parse(fs.readFileSync(guidePath, "utf8"));
 const decisionPayload = JSON.parse(fs.readFileSync(decisionRulesPath, "utf8"));
 const itemNames = JSON.parse(fs.readFileSync(itemNamePath, "utf8"));
+const buildOrderPayload = JSON.parse(fs.readFileSync(buildOrderPath, "utf8"));
 const problems = [];
 
 const addProblem = (message) => problems.push(message);
@@ -67,9 +69,23 @@ for (const [itemId, name] of Object.entries(itemNames)) {
   if (!itemId || !name) addProblem(`国服装备名称映射无效：${itemId || "未知"}`);
 }
 
+let buildOverrideCount = 0;
+for (const [heroId, heroOverride] of Object.entries(buildOrderPayload.heroes || {})) {
+  if (!payload.champions[heroId]) addProblem(`阶段覆盖引用了不存在的英雄 ${heroId}`);
+  for (const [buildLabel, buildOverride] of Object.entries(heroOverride.builds || {})) {
+    buildOverrideCount += 1;
+    if (!buildLabel || !isNonEmptyArray(buildOverride.stages)) addProblem(`英雄 ${heroId} 的阶段覆盖缺少 stages：${buildLabel || "未知"}`);
+    for (const stage of buildOverride.stages || []) {
+      if (!stage.key || !stage.label || !isNonEmptyArray(stage.items) || !stage.items.every(isItemRef)) {
+        addProblem(`英雄 ${heroId} 的阶段覆盖存在无效阶段：${stage.label || "未知"}`);
+      }
+    }
+  }
+}
+
 if (problems.length) {
   console.error(problems.join("\n"));
   process.exitCode = 1;
 } else {
-  console.log(`数据校验通过：${Object.keys(payload.champions).length} 个英雄，${payload.augments.length} 个海克斯，${guideIds.size} 条海克斯联动攻略，${decisionRuleEntries.length} 条威胁规则，${Object.keys(itemNames).length} 个国服装备名称映射，所有出装/情境路线结构完整。`);
+  console.log(`数据校验通过：${Object.keys(payload.champions).length} 个英雄，${payload.augments.length} 个海克斯，${guideIds.size} 条海克斯联动攻略，${decisionRuleEntries.length} 条威胁规则，${buildOverrideCount} 条核心英雄阶段覆盖，${Object.keys(itemNames).length} 个国服装备名称映射，所有出装/情境路线结构完整。`);
 }

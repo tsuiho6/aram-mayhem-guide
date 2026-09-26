@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "patch": "26.19",
+    "notice": "这些阶段是基于英雄统计主线和公开联动攻略整理的初版编辑顺序；鞋子会继续结合情境路线展示。"
+  },
+  "heroes": {
+    "jax": { "builds": { "统计主线 1": { "stages": [{ "key": "core1", "label": "第一件核心装", "items": [{ "id": 6610, "name": "焚天" }] }, { "key": "core2", "label": "第二件装备", "items": [{ "id": 3078, "name": "三相之力" }] }] } } },
+    "yasuo": { "builds": { "统计主线 1": { "stages": [{ "key": "core1", "label": "第一件核心装", "items": [{ "id": 3046, "name": "幻影之舞" }] }, { "key": "core2", "label": "第二件装备", "items": [{ "id": 123430, "name": "毁坏仪式" }] }] } } },
+    "yone": { "builds": { "统计主线 1": { "stages": [{ "key": "core1", "label": "第一件核心装", "items": [{ "id": 3032, "name": "育恩塔尔荒野箭" }] }, { "key": "core2", "label": "第二件装备", "items": [{ "id": 123430, "name": "毁坏仪式" }] }] } } },
+    "hecarim": { "builds": { "统计主线 1": { "stages": [{ "key": "core1", "label": "第一件核心装", "items": [{ "id": 3042, "name": "魔切" }] }, { "key": "core2", "label": "第二件装备", "items": [{ "id": 3161, "name": "朔极之矛" }] }] } } },
+    "blitzcrank": { "builds": { "统计主线 1": { "stages": [{ "key": "core1", "label": "第一件核心装", "items": [{ "id": 3084, "name": "心之钢" }] }, { "key": "core2", "label": "第二件装备", "items": [{ "id": 3083, "name": "狂徒铠甲" }] }] } } },
+    "seraphine": { "builds": { "统计主线 1": { "stages": [{ "key": "core1", "label": "第一件核心装", "items": [{ "id": 6653, "name": "兰德里的折磨" }] }, { "key": "core2", "label": "第二件装备", "items": [{ "id": 2503, "name": "黯炎火炬" }] }] } } },
+    "chogath": { "builds": { "统计主线 1": { "stages": [{ "key": "core1", "label": "第一件核心装", "items": [{ "id": 3084, "name": "心之钢" }] }, { "key": "core2", "label": "第二件装备", "items": [{ "id": 3083, "name": "狂徒铠甲" }] }] } } },
+    "lucian": { "builds": { "统计主线 1": { "stages": [{ "key": "core1", "label": "第一件核心装", "items": [{ "id": 3031, "name": "无尽之刃" }] }, { "key": "core2", "label": "第二件装备", "items": [{ "id": 6676, "name": "收集者" }] }] } } },
+    "smolder": { "builds": { "统计主线 1": { "stages": [{ "key": "core1", "label": "第一件核心装", "items": [{ "id": 3161, "name": "朔极之矛" }] }, { "key": "core2", "label": "第二件装备", "items": [{ "id": 3508, "name": "夺萃之镰" }] }] } } },
+    "gangplank": { "builds": { "统计主线 1": { "stages": [{ "key": "core1", "label": "第一件核心装", "items": [{ "id": 3508, "name": "夺萃之镰" }] }, { "key": "core2", "label": "第二件装备", "items": [{ "id": 6676, "name": "收集者" }] }] } } },
+    "viego": { "builds": { "统计主线 1": { "stages": [{ "key": "core1", "label": "第一件核心装", "items": [{ "id": 6676, "name": "收集者" }] }, { "key": "core2", "label": "第二件装备", "items": [{ "id": 3031, "name": "无尽之刃" }] }] } } },
+    "brand": { "builds": { "统计主线 1": { "stages": [{ "key": "core1", "label": "第一件核心装", "items": [{ "id": 2503, "name": "黯炎火炬" }] }, { "key": "core2", "label": "第二件装备", "items": [{ "id": 6653, "name": "兰德里的折磨" }] }] } } },
+    "vayne": { "builds": { "统计主线 1": { "stages": [{ "key": "core1", "label": "第一件核心装", "items": [{ "id": 3153, "name": "破败王者之刃" }] }, { "key": "core2", "label": "第二件装备", "items": [{ "id": 3124, "name": "鬼索的狂暴之刃" }] }] } } },
+    "shyvana": { "builds": { "统计主线 1": { "stages": [{ "key": "core1", "label": "第一件核心装", "items": [{ "id": 6653, "name": "兰德里的折磨" }] }, { "key": "core2", "label": "第二件装备", "items": [{ "id": 2510, "name": "黄昏与黎明" }] }] } } },
+    "kaisa": { "builds": { "统计主线 1": { "stages": [{ "key": "core1", "label": "第一件核心装", "items": [{ "id": 3087, "name": "斯塔缇克电刃" }] }, { "key": "core2", "label": "第二件装备", "items": [{ "id": 3124, "name": "鬼索的狂暴之刃" }] }] } } }
+  }
+}
