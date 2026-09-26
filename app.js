@@ -289,6 +289,122 @@ const heroes = [
       { id: "poke", label: "对面远程消耗", items: ["卢登的回声", "影焰", "灭世者的死亡之帽"], note: "用更高的远程爆发逼退对方，不要长时间站在兵线前。" },
     ],
   },
+  {
+    id: "hecarim",
+    name: "战争之影",
+    alias: "人马",
+    initial: "H",
+    avatar: "green",
+    roles: ["战士", "前排"],
+    tier: "S",
+    tierClass: "violet",
+    tags: ["高频技能", "冲阵", "持续回复"],
+    note: "人马的海克斯和装备要围绕高频 Q、冲阵后的回复，以及第二次进场展开。",
+    stats: { winRate: "待接入", pickRate: "待接入", sample: "待接入" },
+    coreAugments: [
+      { name: "秘术冲拳", tier: "S", note: "普攻触发减 CD 后，可以把 Q 和 W 的循环拉起来。" },
+      { name: "虚幻武器", tier: "S", note: "让技能触发普攻效果时，和秘术冲拳形成联动。" },
+      { name: "炼狱导管", tier: "A", note: "持续命中时提高技能频率，适合长时间混战。" },
+    ],
+    builds: [
+      { label: "秘术冲拳联动", items: ["夺萃之镰", "破败王者之刃", "贪欲九头蛇"], note: "优先解决技能循环和蓝量，再补持续作战能力。" },
+      { label: "半肉冲阵", items: ["破败王者之刃", "死亡之舞", "振奋盔甲"], note: "敌方爆发高时，进场后的回复和承伤比纯输出更重要。" },
+      { label: "技能急速成长", items: ["朔极之矛", "魔切", "死亡之舞"], note: "拿到高频技能海克斯后，围绕技能急速和资源循环成型。" },
+    ],
+    situations: [
+      { id: "frontline", label: "对面多前排", items: ["破败王者之刃", "贪欲九头蛇", "黑色切割者"], note: "用持续技能和百分比伤害处理前排，不要一头撞进去秒人。" },
+      { id: "burst", label: "对面多爆发", items: ["破败王者之刃", "死亡之舞", "振奋盔甲"], note: "先让第一轮伤害可承受，再利用移速和回复拉出第二轮。" },
+      { id: "control", label: "对面多控制", items: ["水银之靴", "死亡之舞", "振奋盔甲"], note: "不要在控制都没交时单人冲阵，等待更好的二次进场。" },
+      { id: "poke", label: "对面远程消耗", items: ["破败王者之刃", "朔极之矛", "死亡之舞"], note: "尽快接近并维持技能循环，避免在远处被消耗到无法进场。" },
+    ],
+  },
+  {
+    id: "masteryi",
+    name: "无极剑圣",
+    alias: "易大师",
+    initial: "YI",
+    avatar: "orange",
+    roles: ["战士", "射手"],
+    tier: "S",
+    tierClass: "violet",
+    tags: ["收割", "高频 Q", "残局接管"],
+    note: "剑圣的具体路线取决于海克斯是否能把 Q 变成高频核心，以及敌方是否有稳定控制。",
+    stats: { winRate: "待接入", pickRate: "待接入", sample: "待接入" },
+    coreAugments: [
+      { name: "秘术冲拳", tier: "S", note: "配合高技能急速可以显著提高 Q 的无敌和收割频率。" },
+      { name: "升级：收集者", tier: "A", note: "敌方脆皮多时，强化收割线会更清晰。" },
+      { name: "裁决使", tier: "A", note: "暴击路线成型后，适合快速结束残血目标。" },
+    ],
+    builds: [
+      { label: "无限 Q 方向", items: ["夺萃之镰", "破败王者之刃", "贪欲九头蛇"], note: "需要足够技能急速和蓝量，先把 Q 循环做出来。" },
+      { label: "暴击收割", items: ["无尽之刃", "收集者", "夺萃之镰"], note: "敌方脆皮多且控制少时，快速收割比站撸前排更重要。" },
+      { label: "半肉容错", items: ["破败王者之刃", "死亡之舞", "斯特拉克的挑战护手"], note: "敌方控制和爆发高时，先保证第一次进场能活着退出。" },
+    ],
+    situations: [
+      { id: "frontline", label: "对面多前排", items: ["破败王者之刃", "贪欲九头蛇", "黑色切割者"], note: "不要把全部资源放在一次收割，先保证能持续处理前排。" },
+      { id: "burst", label: "对面多爆发", items: ["破败王者之刃", "死亡之舞", "守护天使"], note: "第一次进场的目标是打出重置，不是立刻穿过全部敌人。" },
+      { id: "control", label: "对面多控制", items: ["水银弯刀", "破败王者之刃", "死亡之舞"], note: "等关键控制交出再开大进场，水银弯刀留给决定生死的控制。" },
+      { id: "poke", label: "对面远程消耗", items: ["夺萃之镰", "破败王者之刃", "收集者"], note: "先解决接近和蓝量，再用 Q 躲技能并寻找残血。" },
+    ],
+  },
+  {
+    id: "riven",
+    name: "放逐之刃",
+    alias: "锐雯",
+    initial: "R",
+    avatar: "orange",
+    roles: ["战士"],
+    tier: "A",
+    tierClass: "gold",
+    tags: ["连段爆发", "护盾换血", "二次进场"],
+    note: "锐雯要根据海克斯决定是追求技能循环，还是用半肉装备把一次进场变成持续作战。",
+    stats: { winRate: "待接入", pickRate: "待接入", sample: "待接入" },
+    coreAugments: [
+      { name: "秘术冲拳", tier: "S", note: "普攻减 CD 能显著提高技能连段的重复频率。" },
+      { name: "终极唤醒", tier: "A", note: "提高大招频率，适合连续寻找进场和收割窗口。" },
+      { name: "升级：死亡之舞", tier: "A", note: "敌方爆发高时，把海克斯收益转成更可靠的容错。" },
+    ],
+    builds: [
+      { label: "默认半肉", items: ["焚天", "黑色切割者", "死亡之舞"], note: "兼顾技能急速、持续作战和第一轮进场后的生存。" },
+      { label: "对面脆皮多", items: ["焚天", "朔极之矛", "无尽之刃"], note: "己方已有前排时，第三件再转更高爆发。" },
+      { label: "敌方爆发高", items: ["焚天", "死亡之舞", "斯特拉克的挑战护手"], note: "先解决进场后被秒的问题，再补输出。" },
+    ],
+    situations: [
+      { id: "frontline", label: "对面多前排", items: ["焚天", "黑色切割者", "死亡之舞"], note: "技能急速和持续作战优先，避免只做一次性爆发。" },
+      { id: "burst", label: "对面多爆发", items: ["焚天", "死亡之舞", "斯特拉克的挑战护手"], note: "护盾和伤害延迟能帮助你打出第二轮技能。" },
+      { id: "control", label: "对面多控制", items: ["水银之靴", "焚天", "死亡之舞"], note: "不要把 E 和位移一次性交完，等待控制链断档。" },
+      { id: "poke", label: "对面远程消耗", items: ["焚天", "朔极之矛", "黑色切割者"], note: "提高接近和技能频率，减少在边缘被慢慢磨死。" },
+    ],
+  },
+  {
+    id: "leona",
+    name: "曙光女神",
+    alias: "蕾欧娜",
+    initial: "L",
+    avatar: "gold",
+    roles: ["前排"],
+    tier: "A",
+    tierClass: "gold",
+    tags: ["硬控开团", "前排承伤", "保护后排"],
+    note: "蕾欧娜不是只看开团次数，装备要保证她能活着打出第二轮控制并保护队友。",
+    stats: { winRate: "待接入", pickRate: "待接入", sample: "待接入" },
+    coreAugments: [
+      { name: "坦克引擎", tier: "S", note: "提高进入敌阵后的有效承伤，适合缺前排的队伍。" },
+      { name: "终极唤醒", tier: "A", note: "大招更频繁时，开团和保护两个职责都能兼顾。" },
+      { name: "炼狱导管", tier: "A", note: "技能持续命中时，提高控制循环和团队威胁。" },
+    ],
+    builds: [
+      { label: "默认开团", items: ["心之钢", "日炎圣盾", "兰顿之兆"], note: "需要你主动开团并吃第一轮伤害时使用。" },
+      { label: "对面 AP 多", items: ["心之钢", "振奋盔甲", "自然之力"], note: "把魔抗和回复做好，避免开完团立刻蒸发。" },
+      { label: "保护后排", items: ["坚定之心", "冰霜之心", "荆棘之甲"], note: "己方后排强时，优先做减伤和限制敌方普攻。" },
+    ],
+    situations: [
+      { id: "frontline", label: "对面多前排", items: ["心之钢", "日炎圣盾", "冰霜之心"], note: "先限制对面前排的输出，再把控制留给突进者。" },
+      { id: "burst", label: "对面多爆发", items: ["心之钢", "兰顿之兆", "振奋盔甲"], note: "开团后不要只追最远目标，优先保护己方输出。" },
+      { id: "control", label: "对面多控制", items: ["水银之靴", "坚定之心", "心之钢"], note: "先保证自己能完成一轮控制链，再追求更多生命值。" },
+      { id: "poke", label: "对面远程消耗", items: ["心之钢", "自然之力", "日炎圣盾"], note: "用移速和抗性尽快接近，别在远处和射手换血。" },
+    ],
+  },
 ];
 
 const augmentRankings = [
@@ -304,16 +420,49 @@ const augmentRankings = [
   { rank: 10, name: "关键暴击", tier: "A", tierClass: "gold", heroes: "卡莎 / 艾希", note: "看到后再考虑暴击装备，不要在没有联动时强行转型。" },
   { rank: 11, name: "歌利亚巨人", tier: "A", tierClass: "gold", heroes: "奥恩 / 加里奥", note: "成长型前排海克斯，后续装备要补抗性和回复。" },
   { rank: 12, name: "精怪魔法", tier: "A", tierClass: "gold", heroes: "奥恩 / 阿狸", note: "改变技能伤害结构，选到后再把装备向法强和穿透移动。" },
+  { rank: 13, name: "虚幻武器", tier: "S", tierClass: "violet", heroes: "人马 / 剑圣 / 贾克斯", note: "让技能触发普攻效果时，和秘术冲拳形成更强循环。" },
+  { rank: 14, name: "升级：收集者", tier: "A", tierClass: "gold", heroes: "剑圣", note: "敌方脆皮多时提高收割确定性，前排局不要盲目选择。" },
+  { rank: 15, name: "裁决使", tier: "A", tierClass: "gold", heroes: "剑圣 / 锐雯", note: "暴击和收割路线的候选海克斯，需要看敌方控制量。" },
+  { rank: 16, name: "升级：死亡之舞", tier: "A", tierClass: "gold", heroes: "锐雯", note: "敌方爆发高时提升进场容错，避免只看面板伤害。" },
 ];
 
 const tierOrder = { SS: 0, S: 1, A: 2, B: 3 };
 const state = { query: "", role: "全部", sort: "tier", selected: "jax", scenarioHero: "jax", scenarioThreat: "frontline" };
+const championKeys = { jax: "Jax", yasuo: "Yasuo", teemo: "Teemo", tahm: "TahmKench", ornn: "Ornn", kaisa: "KaiSa", morgana: "Morgana", galio: "Galio", ashe: "Ashe", ahri: "Ahri", hecarim: "Hecarim", masteryi: "MasterYi", riven: "Riven", leona: "Leona" };
+const assets = { baseUrl: "", championUrls: {}, itemUrls: {} };
 const heroList = document.querySelector("#heroList");
 const detailPanel = document.querySelector("#detailPanel");
 const resultCount = document.querySelector("#resultCount");
 const scenarioHero = document.querySelector("#scenarioHero");
 const scenarioThreat = document.querySelector("#scenarioThreat");
 const scenarioResult = document.querySelector("#scenarioResult");
+
+function avatarMarkup(hero) {
+  const imageUrl = assets.championUrls[hero.id];
+  return `<span class="avatar ${hero.avatar}">${imageUrl ? `<img src="${imageUrl}" alt="${hero.name}头像" data-avatar-image /><b class="avatar-fallback" hidden>${hero.initial}</b>` : `<b class="avatar-fallback">${hero.initial}</b>`}</span>`;
+}
+
+function itemMarkup(item) {
+  const imageUrl = assets.itemUrls[item];
+  return `<em class="item-chip">${imageUrl ? `<img src="${imageUrl}" alt="${item}图标" data-item-image />` : `<span class="item-placeholder">◆</span>`}<span>${item}</span></em>`;
+}
+
+function bindAssetFallbacks() {
+  document.querySelectorAll("[data-avatar-image]").forEach((image) => {
+    image.addEventListener("error", () => {
+      image.remove();
+      const fallback = image.parentElement?.querySelector(".avatar-fallback");
+      if (fallback) fallback.hidden = false;
+    });
+  });
+  document.querySelectorAll("[data-item-image]").forEach((image) => {
+    image.addEventListener("error", () => {
+      image.remove();
+      const placeholder = image.parentElement?.querySelector(".item-placeholder");
+      if (placeholder) placeholder.hidden = false;
+    });
+  });
+}
 
 function heroText(hero) {
   return [hero.name, hero.alias, hero.note, ...hero.roles, ...hero.tags, ...hero.coreAugments.map((item) => item.name), ...hero.builds.flatMap((build) => [build.label, ...build.items, build.note])].join(" ").toLowerCase();
@@ -341,7 +490,7 @@ function renderHeroList() {
     ? visible.map((hero, index) => `
       <button class="ranking-row ${state.selected === hero.id ? "selected" : ""}" data-hero="${hero.id}">
         <span class="rank-index">${String(index + 1).padStart(2, "0")}</span>
-        <span class="ranking-hero"><span class="avatar ${hero.avatar}">${hero.initial}</span><span><strong>${hero.name}</strong><small>${hero.alias} · ${hero.roles.join(" / ")}</small></span></span>
+        <span class="ranking-hero">${avatarMarkup(hero)}<span><strong>${hero.name}</strong><small>${hero.alias} · ${hero.roles.join(" / ")}</small></span></span>
         <span class="ranking-tier"><b class="tier ${hero.tierClass}">${hero.tier}</b><small>编辑评级</small></span>
         <span class="ranking-augment">${hero.coreAugments.slice(0, 2).map((item) => `<em>${item.name}</em>`).join("")}</span>
         <span class="ranking-data"><strong>${hero.stats.winRate}</strong><small>样本 ${hero.stats.sample}</small></span>
@@ -349,6 +498,7 @@ function renderHeroList() {
     `).join("")
     : `<div class="empty-state">没有找到匹配的英雄、海克斯或出装关键词。</div>`;
 
+  bindAssetFallbacks();
   heroList.querySelectorAll("[data-hero]").forEach((row) => {
     row.addEventListener("click", () => {
       state.selected = row.dataset.hero;
@@ -362,15 +512,16 @@ function renderDetail() {
   const hero = heroes.find((item) => item.id === state.selected) || heroes[0];
   detailPanel.innerHTML = `
     <div class="detail-kicker"><span>DECISION CARD</span><span>编辑草案</span></div>
-    <div class="detail-title"><span class="avatar ${hero.avatar}">${hero.initial}</span><div><h3>${hero.name}</h3><p>${hero.alias} · ${hero.roles.join(" / ")}</p></div><b class="tier ${hero.tierClass}">${hero.tier}</b></div>
+    <div class="detail-title">${avatarMarkup(hero)}<div><h3>${hero.name}</h3><p>${hero.alias} · ${hero.roles.join(" / ")}</p></div><b class="tier ${hero.tierClass}">${hero.tier}</b></div>
     <div class="metric-strip"><div><strong>${hero.stats.winRate}</strong><span>胜率</span></div><div><strong>${hero.stats.pickRate}</strong><span>选择率</span></div><div><strong>${hero.stats.sample}</strong><span>样本</span></div></div>
     <p class="detail-summary">${hero.note}</p>
     <h4>海克斯优先级</h4>
     <div class="augment-stack">${hero.coreAugments.map((item) => `<div class="augment-item"><b class="mini-tier ${item.tier.toLowerCase()}">${item.tier}</b><span><strong>${item.name}</strong><small>${item.note}</small></span></div>`).join("")}</div>
     <h4>出装决策</h4>
-    <div class="decision-table">${hero.builds.map((build) => `<div class="decision-row"><strong>${build.label}</strong><span class="item-chips">${build.items.map((item) => `<em>${item}</em>`).join("")}</span><small>${build.note}</small></div>`).join("")}</div>
+    <div class="decision-table">${hero.builds.map((build) => `<div class="decision-row"><strong>${build.label}</strong><span class="item-chips">${build.items.map(itemMarkup).join("")}</span><small>${build.note}</small></div>`).join("")}</div>
     <div class="detail-footnote">数据状态：${hero.stats.sample === "待接入" ? "统计快照待接入" : "已接入统计"}。当前评级只用于展示决策结构。</div>
   `;
+  bindAssetFallbacks();
 }
 
 function renderAugments() {
@@ -402,9 +553,31 @@ function renderScenario() {
     <div class="scenario-result-top"><span class="eyebrow">RECOMMENDATION</span><span class="status-pill">编辑草案</span></div>
     <h3>${hero.name} · ${situation.label}</h3>
     <p>${situation.note}</p>
-    <div class="scenario-items">${situation.items.map((item) => `<span>${item}</span>`).join("")}</div>
+    <div class="scenario-items">${situation.items.map(itemMarkup).join("")}</div>
     <small>正式版本将补充装备 ID、样本量和数据来源。</small>
   `;
+  bindAssetFallbacks();
+}
+
+async function hydrateAssets() {
+  try {
+    const versions = await fetch("https://ddragon.leagueoflegends.com/api/versions.json").then((response) => response.json());
+    const version = versions[0];
+    const baseUrl = `https://ddragon.leagueoflegends.com/cdn/${version}`;
+    const itemData = await fetch(`${baseUrl}/data/zh_CN/item.json`).then((response) => response.json());
+    assets.baseUrl = baseUrl;
+    heroes.forEach((hero) => {
+      assets.championUrls[hero.id] = `${baseUrl}/img/champion/${championKeys[hero.id]}.png`;
+    });
+    Object.values(itemData.data).forEach((item) => {
+      if (item.name && !assets.itemUrls[item.name]) assets.itemUrls[item.name] = `${baseUrl}/img/item/${item.id}.png`;
+    });
+    renderHeroList();
+    renderDetail();
+    renderScenario();
+  } catch (error) {
+    console.info("游戏图标加载失败，保留文字 fallback。", error);
+  }
 }
 
 document.querySelector("#searchInput").addEventListener("input", (event) => {
@@ -441,3 +614,4 @@ renderHeroList();
 renderDetail();
 renderAugments();
 renderScenarioHeroOptions();
+hydrateAssets();
