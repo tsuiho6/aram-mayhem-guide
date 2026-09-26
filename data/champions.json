@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "patch": "26.19",
+  "status": "draft",
+  "description": "第一版页面使用的玩法草案。统计字段接入前不得当作正式版本答案。",
+  "champions": [
+    {
+      "id": "jax",
+      "name": "武器大师",
+      "roles": ["fighter", "frontline"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note"]
+    },
+    {
+      "id": "yasuo",
+      "name": "疾风剑豪",
+      "roles": ["fighter", "marksman"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note"]
+    },
+    {
+      "id": "teemo",
+      "name": "迅捷斥候",
+      "roles": ["mage", "marksman"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note"]
+    },
+    {
+      "id": "tahm-kench",
+      "name": "河流之王",
+      "roles": ["frontline"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note"]
+    }
+  ]
+}
