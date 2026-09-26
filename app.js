@@ -622,7 +622,7 @@ let augmentBuildGuides = {};
 let decisionRules = {};
 
 const tierOrder = { SS: 0, S: 1, A: 2, B: 3, C: 4, 待定: 9 };
-const state = { query: "", role: "全部", sort: "tier", selected: "jax", augmentColor: "白银", scenarioHero: "jax", scenarioHeroQuery: "", scenarioThreats: ["frontline"], decisionAugmentQuery: "", selectedAugments: [], ownedItems: [] };
+const state = { query: "", role: "全部", sort: "tier", selected: "jax", augmentColor: "白银", scenarioHero: "jax", scenarioHeroQuery: "", scenarioThreats: ["frontline"], decisionAugmentQuery: "", decisionAugmentRarity: "全部", selectedAugments: [], ownedItems: [] };
 const championKeys = { jax: "Jax", yasuo: "Yasuo", teemo: "Teemo", tahm: "TahmKench", ornn: "Ornn", kaisa: "Kaisa", morgana: "Morgana", galio: "Galio", ashe: "Ashe", ahri: "Ahri", hecarim: "Hecarim", masteryi: "MasterYi", riven: "Riven", leona: "Leona", ...Object.fromEntries(championSeeds.map((champion) => [champion.id, champion.key])) };
 const championIds = { jax: 24, yasuo: 157, teemo: 17, tahm: 223, ornn: 516, kaisa: 145, morgana: 25, galio: 3, ashe: 22, ahri: 103, hecarim: 120, masteryi: 11, riven: 92, leona: 89 };
 /** @type {Record<string, number>} */
@@ -639,18 +639,20 @@ const itemIds = {
   "水银弯刀": 3139,
   "无尽之刃": 3031,
   "纳沃利迅刃": 6675,
+  "纳沃利烁刃": 6675,
   "饮血剑": 3072,
   "卢安娜的飓风": 3085,
-  "兰德里的折磨": 3116,
-  "影焰": 4646,
+  "兰德里的折磨": 6653,
+  "影焰": 4645,
   "虚空之杖": 3135,
   "法师之靴": 3020,
   "中娅沙漏": 3157,
   "纳什之牙": 3115,
   "鬼索的狂暴之刃": 3124,
   "智慧末刃": 3091,
-  "黯炎火炬": 4645,
-  "瑞莱的冰晶节杖": 3118,
+  "黯炎火炬": 2503,
+  "瑞莱的冰晶节杖": 3116,
+  "残疫": 3118,
   "心之钢": 3084,
   "狂徒铠甲": 3083,
   "荆棘之甲": 3075,
@@ -659,16 +661,17 @@ const itemIds = {
   "日炎圣盾": 3068,
   "无终恨意": 2502,
   "幽梦之灵": 3142,
-  "月石再生器": 6610,
+  "月石再生器": 6617,
   "救赎": 3107,
-  "流水法杖": 6614,
+  "流水法杖": 6616,
   "钢铁烈阳之匣": 3190,
   "骑士之誓": 3109,
   "斯塔缇克电刃": 3087,
   "夺萃之镰": 3508,
-  "贪欲九头蛇": 3748,
+  "贪欲九头蛇": 3074,
+  "巨型九头蛇": 3748,
   "朔极之矛": 3161,
-  "焚天": 6692,
+  "焚天": 6610,
   "守护天使": 3026,
   "收集者": 6676,
   "海妖杀手": 6672,
@@ -678,8 +681,12 @@ const itemIds = {
   "多米尼克领主的致意": 3036,
   "育恩塔尔荒野箭": 3032,
   "界弓": 3302,
+  "风暴狂涌": 4646,
 };
-const assets = { baseUrl: "", championUrls: {}, championFallbackUrls: {}, itemUrls: {}, itemNamesById: {} };
+const itemNameOverrides = {
+  2502: "无终恨意", 2503: "黯炎火炬", 2510: "黄昏与黎明", 3020: "法师之靴", 3026: "守护天使", 3031: "无尽之刃", 3032: "育恩塔尔荒野箭", 3036: "多米尼克领主的致意", 3053: "斯特拉克的挑战护手", 3065: "振奋盔甲", 3068: "日炎圣盾", 3071: "黑色切割者", 3072: "饮血剑", 3074: "贪欲九头蛇", 3075: "荆棘之甲", 3078: "三相之力", 3083: "狂徒铠甲", 3084: "心之钢", 3085: "卢安娜的飓风", 3087: "斯塔缇克电刃", 3089: "灭世者的死亡之帽", 3091: "智慧末刃", 3107: "救赎", 3109: "骑士之誓", 3110: "冰霜之心", 3111: "水银之靴", 3115: "纳什之牙", 3116: "瑞莱的冰晶节杖", 3118: "残疫", 3124: "鬼索的狂暴之刃", 3135: "虚空之杖", 3139: "水银弯刀", 3142: "幽梦之灵", 3143: "兰顿之兆", 3153: "破败王者之刃", 3157: "中娅沙漏", 3161: "朔极之矛", 3190: "钢铁烈阳之匣", 3302: "界弓", 3508: "夺萃之镰", 3748: "巨型九头蛇", 4401: "自然之力", 4628: "视界专注", 4645: "影焰", 4646: "风暴狂涌", 6610: "焚天", 6616: "流水法杖", 6617: "月石再生器", 6653: "兰德里的折磨", 6655: "卢登的回声", 6665: "千变者贾修", 6672: "海妖杀手", 6675: "纳沃利烁刃", 6676: "收集者", 6692: "星蚀", 6694: "赛瑞尔达的怨恨",
+};
+const assets = { baseUrl: "", championUrls: {}, championFallbackUrls: {}, itemUrls: {}, itemNamesById: { ...itemNameOverrides } };
 Object.entries(championIds).forEach(([heroId, championId]) => {
   const communityDragonUrl = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${championId}.png`;
   assets.championUrls[heroId] = communityDragonUrl;
@@ -719,6 +726,7 @@ const scenarioThreat = document.querySelector("#scenarioThreat");
 const decisionAugmentSearch = document.querySelector("#decisionAugmentSearch");
 const decisionAugmentResults = document.querySelector("#decisionAugmentResults");
 const decisionSelectedAugments = document.querySelector("#decisionSelectedAugments");
+const decisionAugmentRarity = document.querySelector("#decisionAugmentRarity");
 const decisionOwnedItems = document.querySelector("#decisionOwnedItems");
 const scenarioResult = document.querySelector("#scenarioResult");
 
@@ -746,7 +754,9 @@ function decisionItemKey(item) {
 
 /** @param {BuildItemRef} item */
 function decisionItemName(item) {
-  return typeof item === "object" ? item.name : item;
+  const itemId = typeof item === "object" ? item.id : itemIds[item];
+  const sourceName = typeof item === "object" ? item.name : item;
+  return (itemId && assets.itemNamesById[String(itemId)]) || simplifyText(sourceName);
 }
 
 /** @param {BuildItemRef[]} items @returns {BuildItemRef[]} */
@@ -793,16 +803,20 @@ function renderDecisionAugments() {
   const hero = heroes.find((item) => item.id === state.scenarioHero) || heroes[0];
   const query = state.decisionAugmentQuery.trim().toLowerCase();
   const heroAugmentNames = new Set(hero.coreAugments.map((augment) => augment.name));
-  const visible = augmentRankings
+  const matching = augmentRankings
     .filter((augment) => {
       const text = `${augment.name} ${augment.nameEn || ""}`.toLowerCase();
-      return !query || text.includes(query);
+      const rarityMatch = state.decisionAugmentRarity === "全部" || (augment.rarity || augment.color) === state.decisionAugmentRarity;
+      return rarityMatch && (!query || text.includes(query));
     })
-    .sort((left, right) => Number(heroAugmentNames.has(right.name)) - Number(heroAugmentNames.has(left.name)) || left.rank - right.rank)
-    .slice(0, 10);
+    .sort((left, right) => Number(heroAugmentNames.has(right.name)) - Number(heroAugmentNames.has(left.name)) || left.rank - right.rank);
+  const visible = state.decisionAugmentRarity === "全部" && !query
+    ? ["白银", "黄金", "棱彩"].flatMap((rarity) => matching.filter((augment) => (augment.rarity || augment.color) === rarity).slice(0, 4))
+    : matching.slice(0, 12);
   const selected = new Set(state.selectedAugments.map(String));
+  decisionAugmentRarity.innerHTML = ["全部", "白银", "黄金", "棱彩"].map((rarity) => `<button class="decision-rarity-tab ${state.decisionAugmentRarity === rarity ? "active" : ""}" data-decision-rarity="${rarity}" role="tab" aria-selected="${state.decisionAugmentRarity === rarity}">${rarity}</button>`).join("");
   decisionAugmentResults.innerHTML = visible.length
-    ? visible.map((augment) => `<button class="decision-augment-option ${selected.has(String(augment.id)) ? "selected" : ""}" data-decision-augment="${augment.id}" role="option" aria-selected="${selected.has(String(augment.id))}"><span><strong>${augment.name}</strong><small>${augment.rarity || "海克斯"} · ${augment.heroes.slice(0, 3).join(" / ")}</small></span><b>${selected.has(String(augment.id)) ? "已加入" : "加入"}</b></button>`).join("")
+    ? visible.map((augment) => `<button class="decision-augment-option ${selected.has(String(augment.id)) ? "selected" : ""}" data-decision-augment="${augment.id}" role="option" aria-selected="${selected.has(String(augment.id))}"><span><strong>${augment.name}</strong><small><i class="mini-rarity ${augment.rarity || augment.color}">${augment.rarity || augment.color}</i> · ${augment.heroes.slice(0, 3).join(" / ")}</small></span><b>${selected.has(String(augment.id)) ? "已加入" : "加入"}</b></button>`).join("")
     : `<div class="scenario-no-result">没有找到这个海克斯</div>`;
   const selectedAugments = state.selectedAugments
     .map((id) => augmentRankings.find((augment) => String(augment.id) === String(id)))
@@ -810,6 +824,12 @@ function renderDecisionAugments() {
   decisionSelectedAugments.innerHTML = selectedAugments.length
     ? selectedAugments.map((augment) => `<button class="decision-selected-augment" data-remove-decision-augment="${augment.id}">${augment.name}<span>×</span></button>`).join("")
     : `<span class="decision-empty">暂未选择，先选到的海克斯可以直接加入</span>`;
+  decisionAugmentRarity.querySelectorAll("[data-decision-rarity]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.decisionAugmentRarity = button.dataset.decisionRarity;
+      renderDecisionAugments();
+    });
+  });
 }
 
 function renderDecisionThreatOptions() {
@@ -1064,14 +1084,16 @@ async function hydrateAssets() {
 
 async function hydrateGuideData() {
   try {
-    const [payload, localization, guidePayload, decisionPayload] = await Promise.all([
+    const [payload, localization, guidePayload, decisionPayload, itemLocalization] = await Promise.all([
       fetch("./data/aram-mayhem-26.19.json").then((response) => response.json()),
       fetch("./data/zh-cn-localization.json").then((response) => response.json()),
       fetch("./data/augment-build-guides.json").then((response) => response.json()),
       fetch("./data/decision-rules.json").then((response) => response.json()),
+      fetch("./data/zh-cn-item-names.json").then((response) => response.json()),
     ]);
     augmentBuildGuides = simplifyData(guidePayload.guides || {});
     decisionRules = simplifyData(decisionPayload.threats || {});
+    Object.assign(assets.itemNamesById, itemLocalization);
     const augmentNames = localization.entries || {};
     const localizeAugment = (augment) => {
       const normalized = simplifyData(augment);

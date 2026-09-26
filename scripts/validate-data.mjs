@@ -4,9 +4,11 @@ import { fileURLToPath } from "node:url";
 const dataPath = fileURLToPath(new URL("../data/aram-mayhem-26.19.json", import.meta.url));
 const guidePath = fileURLToPath(new URL("../data/augment-build-guides.json", import.meta.url));
 const decisionRulesPath = fileURLToPath(new URL("../data/decision-rules.json", import.meta.url));
+const itemNamePath = fileURLToPath(new URL("../data/zh-cn-item-names.json", import.meta.url));
 const payload = JSON.parse(fs.readFileSync(dataPath, "utf8"));
 const guidePayload = JSON.parse(fs.readFileSync(guidePath, "utf8"));
 const decisionPayload = JSON.parse(fs.readFileSync(decisionRulesPath, "utf8"));
+const itemNames = JSON.parse(fs.readFileSync(itemNamePath, "utf8"));
 const problems = [];
 
 const addProblem = (message) => problems.push(message);
@@ -61,9 +63,13 @@ for (const [threatId, rule] of decisionRuleEntries) {
   }
 }
 
+for (const [itemId, name] of Object.entries(itemNames)) {
+  if (!itemId || !name) addProblem(`国服装备名称映射无效：${itemId || "未知"}`);
+}
+
 if (problems.length) {
   console.error(problems.join("\n"));
   process.exitCode = 1;
 } else {
-  console.log(`数据校验通过：${Object.keys(payload.champions).length} 个英雄，${payload.augments.length} 个海克斯，${guideIds.size} 条海克斯联动攻略，${decisionRuleEntries.length} 条威胁规则，所有出装/情境路线结构完整。`);
+  console.log(`数据校验通过：${Object.keys(payload.champions).length} 个英雄，${payload.augments.length} 个海克斯，${guideIds.size} 条海克斯联动攻略，${decisionRuleEntries.length} 条威胁规则，${Object.keys(itemNames).length} 个国服装备名称映射，所有出装/情境路线结构完整。`);
 }
