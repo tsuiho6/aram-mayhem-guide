@@ -44,31 +44,31 @@ body::before {
   background-position: 0 0, 0 0, 36px 62px, 36px 62px, 0 0;
   background-size: 72px 124px;
   content: "";
-  opacity: .04;
+  opacity: .08;
   pointer-events: none;
 }
 .wallpaper-rotator { position: fixed; z-index: 0; inset: 0; overflow: hidden; background: #0a111b; pointer-events: none; }
-.wallpaper-rotator::after { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,12,20,.06), rgba(8,14,23,.12) 48%, rgba(9,14,21,.28)), radial-gradient(ellipse at center, transparent 34%, rgba(3,7,12,.1) 100%); content: ""; }
-.wallpaper { position: absolute; inset: -2%; background-position: center 24%; background-size: cover; background-repeat: no-repeat; filter: saturate(1.28) brightness(1.05) contrast(1.12); opacity: 0; animation: wallpaper-cycle 48s ease-in-out infinite; transform: scale(1.03); }
+.wallpaper-rotator::after { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,12,20,.12), rgba(8,14,23,.24) 48%, rgba(9,14,21,.46)), radial-gradient(ellipse at center, transparent 38%, rgba(3,7,12,.16) 100%); content: ""; }
+.wallpaper { position: absolute; inset: -2%; background-position: center 24%; background-size: cover; background-repeat: no-repeat; filter: saturate(1.08) brightness(.94) contrast(1.08); opacity: 0; animation: wallpaper-cycle 48s ease-in-out infinite; transform: scale(1.03); }
 .wallpaper-lissandra { background-image: url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Lissandra_0.jpg"); }
 .wallpaper-anivia { background-image: url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Anivia_0.jpg"); animation-delay: 12s; }
 .wallpaper-ashe { background-image: url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_0.jpg"); animation-delay: 24s; }
 .wallpaper-viktor { background-image: url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Viktor_0.jpg"); animation-delay: 36s; }
 @keyframes wallpaper-cycle {
   0%, 100% { opacity: 0; }
-  1%, 24% { opacity: .88; }
+  1%, 24% { opacity: .72; }
   25% { opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .wallpaper { animation: none; }
   .wallpaper:not(.wallpaper-lissandra) { display: none; }
-  .wallpaper-lissandra { opacity: .88; }
+  .wallpaper-lissandra { opacity: .72; }
 }
 body::after {
   position: fixed;
   z-index: 1;
   inset: 0;
-  background: radial-gradient(ellipse at center, transparent 56%, rgba(3, 7, 12, .07) 100%);
+  background: radial-gradient(ellipse at center, transparent 52%, rgba(3, 7, 12, .12) 100%);
   content: "";
   pointer-events: none;
 }
