@@ -625,7 +625,7 @@ let buildOrderOverrides = {};
 let decisionRules = {};
 
 const tierOrder = { SS: 0, S: 1, A: 2, B: 3, C: 4, 待定: 9 };
-const state = { query: "", role: "全部", sort: "tier", selected: "jax", augmentColor: "白银", selectedAugmentId: "", scenarioHero: "jax", scenarioHeroQuery: "", scenarioThreats: ["frontline"], decisionAugmentQuery: "", decisionAugmentRarity: "全部", selectedAugments: [], ownedItems: [] };
+const state = { query: "", role: "全部", sort: "tier", selected: "jax", augmentColor: "白银", augmentQuery: "", augmentEvidence: "all", selectedAugmentId: "", scenarioHero: "jax", scenarioHeroQuery: "", scenarioThreats: ["frontline"], decisionAugmentQuery: "", decisionAugmentRarity: "全部", selectedAugments: [], ownedItems: [] };
 const championKeys = { jax: "Jax", yasuo: "Yasuo", teemo: "Teemo", tahm: "TahmKench", ornn: "Ornn", kaisa: "Kaisa", morgana: "Morgana", galio: "Galio", ashe: "Ashe", ahri: "Ahri", hecarim: "Hecarim", masteryi: "MasterYi", riven: "Riven", leona: "Leona", ...Object.fromEntries(championSeeds.map((champion) => [champion.id, champion.key])) };
 const championIds = { jax: 24, yasuo: 157, teemo: 17, tahm: 223, ornn: 516, kaisa: 145, morgana: 25, galio: 3, ashe: 22, ahri: 103, hecarim: 120, masteryi: 11, riven: 92, leona: 89 };
 /** @type {Record<string, number>} */
@@ -723,6 +723,8 @@ const heroList = document.querySelector("#heroList");
 const detailPanel = document.querySelector("#detailPanel");
 const resultCount = document.querySelector("#resultCount");
 const augmentTabs = document.querySelector("#augmentTabs");
+const augmentSearch = document.querySelector("#augmentSearch");
+const augmentEvidenceFilter = document.querySelector("#augmentEvidenceFilter");
 const scenarioHeroSearch = document.querySelector("#scenarioHeroSearch");
 const scenarioHeroResults = document.querySelector("#scenarioHeroResults");
 const scenarioThreat = document.querySelector("#scenarioThreat");
@@ -1077,6 +1079,7 @@ function augmentHeroPlanMarkup(augment, heroName, index) {
       ${buildMarkup}
       <div class="augment-detail-line"><span>联动海克斯</span>${linkedAugments.length ? linkedAugments.map((item) => `<em>${item}</em>`).join("") : `<small>暂无已整理联动，先按单海克斯路线。</small>`}</div>
       <div class="augment-caution"><span>不适合直接照搬</span><small>${caution}</small></div>
+      <button class="augment-hero-link" data-augment-hero="${hero.id}">查看 ${hero.name} 的英雄决策 →</button>
     </article>
   `;
 }
@@ -1086,13 +1089,27 @@ function augmentKey(augment) {
   return String(augment.id ?? augment.name);
 }
 
+/** @param {AugmentRanking} augment @returns {boolean} */
+function augmentHasGuide(augment) {
+  return Object.values(augmentBuildGuides).some((guides) => guides.some((guide) => (guide.requiredAugments || []).some((name) => simplifyText(name) === augment.name)));
+}
+
+/** @param {AugmentRanking} augment @returns {string} */
+function augmentEvidenceLabel(augment) {
+  const status = String(augment.recommendationStatus || "");
+  if (status.includes("角色") || status.includes("模板")) return "角色补位";
+  if (status.includes("编辑")) return "编辑草案";
+  if (status.includes("统计") || Number(augment.sample) > 0) return "真实统计";
+  return "待校准";
+}
+
 /** @param {AugmentRanking} augment @returns {string} */
 function augmentDetailMarkup(augment) {
   const heroNames = (augment.heroes || []).slice(0, 3);
   return `
     <article class="augment-detail-card">
       <div class="augment-detail-head"><div><div class="augment-detail-kicker">AUGMENT DETAIL · 点击榜单条目切换</div><h3>${augment.name}</h3><p>${augment.note}</p></div><b class="tier ${augment.tierClass}">${augment.strength || "—"}</b></div>
-      <div class="augment-detail-meta"><span class="color-badge ${augment.color === "棱彩" ? "prismatic" : augment.color === "黄金" ? "gold" : "silver"}">${augment.color}</span><span>全局胜率 ${augment.winRate || "待接入"}</span><span>样本 ${augment.sample || "待接入"}</span><span>${augment.recommendationStatus || "编辑建议"}</span></div>
+      <div class="augment-detail-meta"><span class="color-badge ${augment.color === "棱彩" ? "prismatic" : augment.color === "黄金" ? "gold" : "silver"}">${augment.color}</span><span class="evidence-badge">${augmentEvidenceLabel(augment)}</span><span>全局胜率 ${augment.winRate || "待接入"}</span><span>样本 ${augment.sample || "待接入"}</span><span>${augmentHasGuide(augment) ? "已整理联动攻略" : "暂无专属联动攻略"}</span></div>
       <div class="augment-detail-section-title">最适配的三个英雄 · 拿到后怎么出</div>
       <div class="augment-hero-plans">${heroNames.length ? heroNames.map((heroName, index) => augmentHeroPlanMarkup(augment, heroName, index)).join("") : `<div class="augment-detail-muted">当前海克斯还没有适配英雄记录。</div>`}</div>
     </article>
@@ -1104,13 +1121,24 @@ function renderAugments() {
   const groups = ["白银", "黄金", "棱彩"];
   const colorClass = (color) => color === "棱彩" ? "prismatic" : color === "黄金" ? "gold" : "silver";
   const selectedColor = groups.includes(state.augmentColor) ? state.augmentColor : groups[0];
-  const group = augmentRankings.filter((augment) => augment.color === selectedColor).sort((left, right) => left.rank - right.rank);
+  const allGroup = augmentRankings.filter((augment) => augment.color === selectedColor).sort((left, right) => left.rank - right.rank);
+  const query = state.augmentQuery.trim().toLowerCase();
+  const group = allGroup.filter((augment) => {
+    const searchable = `${augment.name} ${augment.nameEn || ""} ${(augment.heroes || []).join(" ")} ${augment.note || ""}`.toLowerCase();
+    const matchesQuery = !query || searchable.includes(query);
+    const matchesEvidence = state.augmentEvidence === "all"
+      || state.augmentEvidence === "guide" && augmentHasGuide(augment)
+      || state.augmentEvidence === "stats" && augmentEvidenceLabel(augment) === "真实统计";
+    return matchesQuery && matchesEvidence;
+  });
   const selectedAugment = group.find((augment) => augmentKey(augment) === String(state.selectedAugmentId)) || group[0];
   state.selectedAugmentId = selectedAugment ? augmentKey(selectedAugment) : "";
+  augmentSearch.value = state.augmentQuery;
+  augmentEvidenceFilter.value = state.augmentEvidence;
   augmentTabs.innerHTML = groups.map((color) => `<button class="augment-tab ${color === selectedColor ? "active" : ""}" data-augment-color="${color}" role="tab" aria-selected="${color === selectedColor}"><span class="color-badge ${colorClass(color)}">${color}</span><strong>${color}</strong><small>${augmentRankings.filter((augment) => augment.color === color).length} 个</small></button>`).join("");
   document.querySelector("#augmentList").innerHTML = `
     <section class="augment-group">
-      <div class="augment-group-heading"><div><span class="color-badge ${colorClass(selectedColor)}">${selectedColor}</span><strong>${selectedColor}海克斯</strong></div><small>每个条目列出最适配的 3 个英雄</small></div>
+      <div class="augment-group-heading"><div><span class="color-badge ${colorClass(selectedColor)}">${selectedColor}</span><strong>${selectedColor}海克斯</strong></div><small>显示 ${group.length} / ${allGroup.length} 条 · 点击条目查看详情</small></div>
       ${selectedAugment ? augmentDetailMarkup(selectedAugment) : `<div class="augment-detail-muted">当前稀有度暂无数据。</div>`}
       <div class="augment-table">
         <div class="augment-head"><span># / 海克斯</span><span>稀有度</span><span>最适配英雄</span><span>联动方向 / 状态</span></div>
@@ -1128,6 +1156,14 @@ function renderAugments() {
     button.addEventListener("click", () => {
       state.selectedAugmentId = button.dataset.augmentId;
       renderAugments();
+    });
+  });
+  document.querySelector("#augmentList").querySelectorAll("[data-augment-hero]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.selected = button.dataset.augmentHero;
+      renderHeroList();
+      renderDetail();
+      document.querySelector("#heroes").scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
   bindAssetFallbacks();
@@ -1208,6 +1244,7 @@ async function hydrateAssets() {
     });
     renderHeroList();
     renderDetail();
+    renderAugments();
     renderScenarioHeroOptions();
     renderScenario();
   } catch (error) {
@@ -1282,6 +1319,16 @@ document.querySelector("#searchInput").addEventListener("input", (event) => {
 document.querySelector("#sortSelect").addEventListener("change", (event) => {
   state.sort = event.target.value;
   renderHeroList();
+});
+
+augmentSearch.addEventListener("input", (event) => {
+  state.augmentQuery = event.target.value;
+  renderAugments();
+});
+
+augmentEvidenceFilter.addEventListener("change", (event) => {
+  state.augmentEvidence = event.target.value;
+  renderAugments();
 });
 
 document.querySelectorAll("#roleFilters .filter").forEach((button) => {
