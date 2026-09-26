@@ -832,7 +832,7 @@ function renderDecisionOwnedItems() {
   ]);
   const validKeys = new Set(allItems.map(decisionItemKey));
   state.ownedItems = state.ownedItems.filter((key) => validKeys.has(key));
-  decisionOwnedItems.innerHTML = allItems.map((item) => `<option value="${decisionItemKey(item)}" ${state.ownedItems.includes(decisionItemKey(item)) ? "selected" : ""}>${decisionItemName(item)}</option>`).join("");
+  decisionOwnedItems.innerHTML = allItems.map((item) => `<label class="owned-item-option"><input type="checkbox" value="${decisionItemKey(item)}" ${state.ownedItems.includes(decisionItemKey(item)) ? "checked" : ""} /><span>${decisionItemName(item)}</span></label>`).join("");
 }
 
 function buildDecision() {
@@ -1179,7 +1179,7 @@ decisionSelectedAugments.addEventListener("click", (event) => {
 });
 
 decisionOwnedItems.addEventListener("change", () => {
-  state.ownedItems = [...decisionOwnedItems.selectedOptions].map((option) => option.value);
+  state.ownedItems = [...decisionOwnedItems.querySelectorAll("input:checked")].map((input) => input.value);
   renderScenario();
 });
 

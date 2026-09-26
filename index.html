@@ -150,7 +150,10 @@
                 <span class="field-label">对面威胁（可多选）</span>
                 <div class="threat-options" id="scenarioThreat" aria-label="对面威胁"></div>
               </div>
-              <label class="select-box wide-select owned-items-label"><span>已有装备（可选）</span><select id="decisionOwnedItems" multiple aria-label="当前已有装备"></select></label>
+              <div class="decision-field owned-items-label">
+                <span class="field-label">已有装备（可选）</span>
+                <div class="owned-item-options" id="decisionOwnedItems" role="group" aria-label="当前已有装备"></div>
+              </div>
               <p>推荐顺序优先考虑海克斯联动，再叠加对面威胁规则；没有匹配联动时自动回到英雄统计主线。</p>
             </div>
             <div class="scenario-result" id="scenarioResult"></div>
