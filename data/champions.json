@@ -73,6 +73,34 @@
       "roles": ["mage"],
       "contentStatus": "draft",
       "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "hecarim",
+      "name": "战争之影",
+      "roles": ["fighter", "frontline"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "masteryi",
+      "name": "无极剑圣",
+      "roles": ["fighter", "marksman"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "riven",
+      "name": "放逐之刃",
+      "roles": ["fighter"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "leona",
+      "name": "曙光女神",
+      "roles": ["frontline"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
     }
   ]
 }
