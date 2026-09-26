@@ -1018,7 +1018,7 @@ function renderDetail() {
   const sourceStatus = hero.dataState === "统计快照" ? "统计快照" : "编辑草案";
   const synergyGuides = augmentBuildGuides[hero.id] || [];
   detailPanel.innerHTML = `
-    <div class="detail-kicker"><span>DECISION CARD</span><span>${sourceStatus}</span></div>
+    <div class="detail-kicker"><span>英雄决策</span><span>${sourceStatus}</span></div>
     <div class="detail-title">${avatarMarkup(hero)}<div><h3>${hero.name}</h3><p>${hero.alias} · ${hero.roles.join(" / ")}</p></div><b class="tier ${hero.tierClass}">${hero.tier}</b></div>
     <div class="metric-strip"><div><strong>${hero.stats.winRate}</strong><span>胜率</span></div><div><strong>${hero.stats.pickRate}</strong><span>选择率</span></div><div><strong>${hero.stats.sample}</strong><span>样本</span></div></div>
     <p class="detail-summary">${hero.note}</p>
@@ -1108,7 +1108,7 @@ function augmentDetailMarkup(augment) {
   const heroNames = (augment.heroes || []).slice(0, 3);
   return `
     <article class="augment-detail-card">
-      <div class="augment-detail-head"><div><div class="augment-detail-kicker">AUGMENT DETAIL · 点击榜单条目切换</div><h3>${augment.name}</h3><p>${augment.note}</p></div><b class="tier ${augment.tierClass}">${augment.strength || "—"}</b></div>
+      <div class="augment-detail-head"><div><div class="augment-detail-kicker">海克斯详情 · 点击榜单条目切换</div><h3>${augment.name}</h3><p>${augment.note}</p></div><b class="tier ${augment.tierClass}">${augment.strength || "—"}</b></div>
       <div class="augment-detail-meta"><span class="color-badge ${augment.color === "棱彩" ? "prismatic" : augment.color === "黄金" ? "gold" : "silver"}">${augment.color}</span><span class="evidence-badge">${augmentEvidenceLabel(augment)}</span><span>全局胜率 ${augment.winRate || "待接入"}</span><span>样本 ${augment.sample || "待接入"}</span><span>${augmentHasGuide(augment) ? "已整理联动攻略" : "暂无专属联动攻略"}</span></div>
       <div class="augment-detail-section-title">最适配的三个英雄 · 拿到后怎么出</div>
       <div class="augment-hero-plans">${heroNames.length ? heroNames.map((heroName, index) => augmentHeroPlanMarkup(augment, heroName, index)).join("") : `<div class="augment-detail-muted">当前海克斯还没有适配英雄记录。</div>`}</div>
@@ -1197,7 +1197,7 @@ function renderScenario() {
     ? decision.avoidItems.map((item) => decisionItemCard(item, "不建议优先", item.reason)).join("")
     : `<p class="decision-muted">当前条件没有明确的禁出装规则，不强行制造结论。</p>`;
   scenarioResult.innerHTML = `
-    <div class="scenario-result-top"><span class="eyebrow">RECOMMENDATION</span><span class="status-pill">${sourceStatus}</span></div>
+    <div class="scenario-result-top"><span class="eyebrow">推荐结果</span><span class="status-pill">${sourceStatus}</span></div>
     <h3>${decision.hero.name} · ${threatLabels}</h3>
     <div class="decision-context"><span>已选海克斯</span><div>${selectedAugmentMarkup}</div></div>
     <div class="decision-buy-grid">
