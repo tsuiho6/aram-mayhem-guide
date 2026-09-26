@@ -129,10 +129,10 @@
         <section class="section-block" id="scenarios">
           <div class="section-heading">
             <div>
-              <div class="eyebrow">SITUATION BUILDER</div>
-              <h2>情境出装</h2>
+              <div class="eyebrow">QUICK DECISION</div>
+              <h2>快速出装决策</h2>
             </div>
-            <div class="section-meta">英雄 + 对面威胁 → 出装方向</div>
+            <div class="section-meta">英雄 + 海克斯 + 对面威胁 → 具体装备</div>
           </div>
           <div class="scenario-layout">
             <div class="scenario-controls">
@@ -140,8 +140,18 @@
                 <label class="search-box scenario-search"><span>⌕</span><input id="scenarioHeroSearch" type="search" placeholder="搜索我的英雄" autocomplete="off" /></label>
                 <div class="scenario-hero-results" id="scenarioHeroResults" role="listbox" aria-label="英雄搜索结果"></div>
               </div>
-              <label class="select-box wide-select"><span>对面威胁</span><select id="scenarioThreat"></select></label>
-              <p>这里把统计主线和情境规则分开展示；情境路线用于帮助你根据对局做购买决策，不等同于阵容分层胜率。</p>
+              <div class="decision-field">
+                <label class="field-label" for="decisionAugmentSearch">我拿到的海克斯</label>
+                <label class="search-box scenario-search"><span>⌕</span><input id="decisionAugmentSearch" type="search" placeholder="搜索海克斯，点击加入" autocomplete="off" /></label>
+                <div class="decision-selected" id="decisionSelectedAugments" aria-live="polite"></div>
+                <div class="decision-augment-results" id="decisionAugmentResults" role="listbox" aria-label="海克斯搜索结果"></div>
+              </div>
+              <div class="decision-field">
+                <span class="field-label">对面威胁（可多选）</span>
+                <div class="threat-options" id="scenarioThreat" aria-label="对面威胁"></div>
+              </div>
+              <label class="select-box wide-select owned-items-label"><span>已有装备（可选）</span><select id="decisionOwnedItems" multiple aria-label="当前已有装备"></select></label>
+              <p>推荐顺序优先考虑海克斯联动，再叠加对面威胁规则；没有匹配联动时自动回到英雄统计主线。</p>
             </div>
             <div class="scenario-result" id="scenarioResult"></div>
           </div>

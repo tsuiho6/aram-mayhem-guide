@@ -17,6 +17,21 @@
 /** @typedef {string|BuildItem} BuildItemRef */
 
 /**
+ * @typedef {Object} DecisionAvoidItem
+ * @property {number|string} id
+ * @property {string} name
+ * @property {string} reason
+ */
+
+/**
+ * @typedef {Object} DecisionThreatRule
+ * @property {string} label
+ * @property {string} situationId
+ * @property {string} note
+ * @property {DecisionAvoidItem[]} avoidItems
+ */
+
+/**
  * @typedef {Object} AugmentBuildGuide
  * @property {string} id
  * @property {string} title

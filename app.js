@@ -5,6 +5,8 @@
 /** @typedef {import("./types.js").BuildItemRef} BuildItemRef */
 /** @typedef {import("./types.js").AugmentRanking} AugmentRanking */
 /** @typedef {import("./types.js").AugmentBuildGuide} AugmentBuildGuide */
+/** @typedef {import("./types.js").DecisionThreatRule} DecisionThreatRule */
+/** @typedef {import("./types.js").DecisionAvoidItem} DecisionAvoidItem */
 
 import { championSeeds, augmentSeeds } from "./data/catalog.js";
 
@@ -616,8 +618,11 @@ let augmentRankings = augmentSeeds.map((augment) => {
 /** @type {Record<string, AugmentBuildGuide[]>} */
 let augmentBuildGuides = {};
 
+/** @type {Record<string, DecisionThreatRule>} */
+let decisionRules = {};
+
 const tierOrder = { SS: 0, S: 1, A: 2, B: 3, C: 4, 待定: 9 };
-const state = { query: "", role: "全部", sort: "tier", selected: "jax", augmentColor: "白银", scenarioHero: "jax", scenarioHeroQuery: "", scenarioThreat: "frontline" };
+const state = { query: "", role: "全部", sort: "tier", selected: "jax", augmentColor: "白银", scenarioHero: "jax", scenarioHeroQuery: "", scenarioThreats: ["frontline"], decisionAugmentQuery: "", selectedAugments: [], ownedItems: [] };
 const championKeys = { jax: "Jax", yasuo: "Yasuo", teemo: "Teemo", tahm: "TahmKench", ornn: "Ornn", kaisa: "Kaisa", morgana: "Morgana", galio: "Galio", ashe: "Ashe", ahri: "Ahri", hecarim: "Hecarim", masteryi: "MasterYi", riven: "Riven", leona: "Leona", ...Object.fromEntries(championSeeds.map((champion) => [champion.id, champion.key])) };
 const championIds = { jax: 24, yasuo: 157, teemo: 17, tahm: 223, ornn: 516, kaisa: 145, morgana: 25, galio: 3, ashe: 22, ahri: 103, hecarim: 120, masteryi: 11, riven: 92, leona: 89 };
 /** @type {Record<string, number>} */
@@ -681,55 +686,6 @@ Object.entries(championIds).forEach(([heroId, championId]) => {
   assets.championFallbackUrls[heroId] = communityDragonUrl;
 });
 
-const itemGuidance = {
-  3020: ["法术穿透", "对手堆魔抗或需要提高技能伤害时，先用穿透把伤害打实。"],
-  3026: ["复活容错", "这件装备给进场英雄一次重新站起来的机会，适合敌方爆发高的局。"],
-  3031: ["暴击伤害", "暴击路线已经成型时提高普攻上限，适合队伍能保护你的对局。"],
-  3032: ["持续普攻", "补足攻击力和暴击收益，让远程英雄在安全距离持续输出。"],
-  3036: ["百分比穿甲", "对方护甲较高或前排较多时，提高物理伤害穿透效率。"],
-  3053: ["护盾与韧性", "进场后容易被集火时提供一次缓冲，避免刚接触就被秒杀。"],
-  3065: ["魔抗与治疗", "对手魔法伤害或己方治疗、护盾较多时，把回复转成更高的有效生命。"],
-  3068: ["近身灼烧", "需要贴住多人持续作战时补充范围伤害，减少纯肉没有输出的问题。"],
-  3071: ["破甲与技能急速", "长时间打前排或队伍物理伤害充足时，持续削弱目标护甲。"],
-  3072: ["吸血续航", "对手消耗频繁但控制不密集时，提高边缘输出和残血回城前的续航。"],
-  3075: ["护甲与反普攻", "对面普攻、暴击或多名物理英雄较多时，降低正面换血成本。"],
-  3078: ["综合面板与强化普攻", "需要同时补伤害、生命和技能循环时作为稳定的主线装备。"],
-  3083: ["高生命回复", "被远程消耗后能快速回满，适合队伍缺前排且需要反复接战的局。"],
-  3084: ["生命值成长", "可以安全近身并持续叠层时提供成长上限，但不要在无法接触敌人的局硬出。"],
-  3085: ["多目标普攻", "敌方站位密集或需要同时处理兵线和英雄时，提高范围输出效率。"],
-  3087: ["清线与连锁伤害", "对手远程消耗或兵线压力大时，先用范围伤害争取推线和接战空间。"],
-  3089: ["法强放大", "已有稳定技能命中和穿透后，进一步放大整套法术伤害。"],
-  3091: ["攻速与魔抗", "对手有魔法伤害且你仍需持续普攻时，兼顾输出和生存。"],
-  3107: ["群体治疗", "对手爆发或消耗强时为队伍提供第二个生命池，适合保护型路线。"],
-  3110: ["护甲与降攻速", "对方依赖普攻或暴击时，降低其持续输出并提高自己的技能循环。"],
-  3115: ["攻速与法强特效", "普攻能稳定触发特效时，把攻速转成更高的持续伤害。"],
-  3116: ["生命值灼烧", "战斗时间越长收益越高，适合处理前排或持续压制无法快速脱战的目标。"],
-  3118: ["减速与持续法伤", "需要留住目标或限制敌方突进路线时，把技能命中转成更稳定的控制。"],
-  3135: ["百分比法穿", "对手魔抗较高或前排较多时，避免法强堆高却打不出有效伤害。"],
-  3139: ["解控与保命", "对手关键控制决定团战胜负时，用主动解控换取持续输出时间。"],
-  3142: ["移速与穿甲", "对面远程消耗或需要绕侧翼时，提高接近和脱离的成功率。"],
-  3143: ["护甲与暴击减伤", "敌方暴击和物理爆发明显时，优先降低第一轮伤害。"],
-  3153: ["百分比伤害与续航", "对面生命值高、前排多或需要长时间普攻时，持续削减目标血量。"],
-  3157: ["不可选中", "敌方强开或爆发会打断你的输出时，用短暂无敌拖过关键技能。"],
-  3161: ["技能急速与技能伤害", "技能循环决定输出时提高施法频率，适合持续消耗和反复接战。"],
-  3190: ["群体护盾", "队伍需要一起顶过爆发或推进时，为多人争取第一轮生存空间。"],
-  3302: ["持续普攻穿透", "需要同时打前排和后排时，提高普攻对不同护甲目标的稳定性。"],
-  3508: ["暴击与技能资源", "技能和普攻都要频繁使用时，补足资源循环并保持输出。"],
-  3748: ["范围清线与吸血", "近战需要快速清线或同时打多个目标时，提高持续接战能力。"],
-  4401: ["魔抗与移速", "对手魔法消耗持续且你需要接近时，减少被风筝的时间。"],
-  4628: ["远程伤害放大", "技能能在安全距离持续命中时，提高消耗和先手伤害。"],
-  4645: ["灼烧与法术强度", "技能持续命中或敌方前排较多时，把法术伤害转成更高的长线压力。"],
-  4646: ["法穿与低血爆发", "对手脆皮多或需要收割残血时，提高低生命目标的终结能力。"],
-  6655: ["范围爆发", "需要远程清线和消耗时提供额外爆发，适合不方便长时间普攻的法师。"],
-  6672: ["持续对前排", "普攻频率高且需要处理高生命目标时，把输出集中到前排身上。"],
-  6675: ["暴击技能急速", "暴击路线同时依赖技能循环时，提高第二轮技能和普攻频率。"],
-  6676: ["穿甲收割", "敌方脆皮较多且你有稳定收割机会时，提高残血终结确定性。"],
-  6610: ["群体治疗与护盾", "队伍有多个持续输出点时，把你的技能转成更高的团队续航。"],
-  6614: ["强化队友输出", "己方有依赖攻速或法强的核心时，将辅助资源转成团队伤害。"],
-  6692: ["低血增伤与回复", "需要在残血边缘持续作战时提高反打能力，但要避免被瞬间击杀。"],
-  6665: ["双抗成长", "混合伤害或长时间正面作战时，提供比单一抗性更稳定的承伤。"],
-};
-
 const retiredAugmentNames = {
   "transmute: gold": "质变：黄金阶",
   "steel your heart": "钢化你心",
@@ -753,26 +709,6 @@ const retiredAugmentNames = {
   "upgrade sword of blossoming dawn": "升级：破晓绽放之剑",
 };
 
-const scenarioContext = {
-  frontline: "对面前排较多，优先让输出能穿过生命值和抗性。",
-  burst: "对面爆发较高，优先保证第一轮技能后还能继续作战。",
-  control: "对面控制较多，优先提高解控、容错或不被第一时间限制的能力。",
-  poke: "对面远程消耗较强，优先提高接近、续航和安全输出距离。",
-};
-
-/** @param {BuildItemRef} item @param {import("./types.js").SituationRoute} situation */
-function scenarioItemReason(item, situation) {
-  const id = typeof item === "object" ? item.id : itemIds[item];
-  const guidance = itemGuidance[id];
-  const effect = guidance?.[0] || "补足这条路线的核心属性";
-  const reason = guidance?.[1] || scenarioContext[situation.id] || "根据当前对局威胁补足有效属性。";
-  return `<strong>作用：${effect}</strong><small>原因：${reason}</small>`;
-}
-
-/** @param {BuildItemRef} item @param {import("./types.js").SituationRoute} situation */
-function scenarioItemMarkup(item, situation) {
-  return `<article class="scenario-item-card">${itemMarkup(item)}<div class="scenario-item-reason">${scenarioItemReason(item, situation)}</div></article>`;
-}
 const heroList = document.querySelector("#heroList");
 const detailPanel = document.querySelector("#detailPanel");
 const resultCount = document.querySelector("#resultCount");
@@ -780,6 +716,10 @@ const augmentTabs = document.querySelector("#augmentTabs");
 const scenarioHeroSearch = document.querySelector("#scenarioHeroSearch");
 const scenarioHeroResults = document.querySelector("#scenarioHeroResults");
 const scenarioThreat = document.querySelector("#scenarioThreat");
+const decisionAugmentSearch = document.querySelector("#decisionAugmentSearch");
+const decisionAugmentResults = document.querySelector("#decisionAugmentResults");
+const decisionSelectedAugments = document.querySelector("#decisionSelectedAugments");
+const decisionOwnedItems = document.querySelector("#decisionOwnedItems");
 const scenarioResult = document.querySelector("#scenarioResult");
 
 /** @param {Hero} hero */
@@ -798,6 +738,41 @@ function itemMarkup(item) {
   return `<em class="item-chip">${imageUrl ? `<img src="${imageUrl}" alt="${label}图标" data-item-image />` : `<span class="item-placeholder">◆</span>`}<span>${label}</span></em>`;
 }
 
+/** @param {BuildItemRef} item */
+function decisionItemKey(item) {
+  const id = typeof item === "object" ? item.id : itemIds[item];
+  return id ? String(id) : String(typeof item === "object" ? item.name : item);
+}
+
+/** @param {BuildItemRef} item */
+function decisionItemName(item) {
+  return typeof item === "object" ? item.name : item;
+}
+
+/** @param {BuildItemRef[]} items @returns {BuildItemRef[]} */
+function uniqueDecisionItems(items) {
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = decisionItemKey(item);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+/** @returns {string[]} */
+function selectedDecisionAugmentNames() {
+  return state.selectedAugments
+    .map((id) => augmentRankings.find((augment) => String(augment.id) === String(id)))
+    .filter(Boolean)
+    .map((augment) => augment.name);
+}
+
+/** @param {BuildItemRef} item @param {string} label @param {string} reason */
+function decisionItemCard(item, label, reason) {
+  return `<article class="decision-buy-card"><span class="decision-order">${label}</span>${itemMarkup(item)}<small>${reason}</small></article>`;
+}
+
 /** @param {AugmentBuildGuide} guide */
 function augmentBuildGuideMarkup(guide) {
   const requiredAugments = guide.requiredAugments || [];
@@ -812,6 +787,87 @@ function augmentBuildGuideMarkup(guide) {
       <small>${guide.sourceType} · <a href="${guide.source}" target="_blank" rel="noreferrer">查看原文</a></small>
     </article>
   `;
+}
+
+function renderDecisionAugments() {
+  const hero = heroes.find((item) => item.id === state.scenarioHero) || heroes[0];
+  const query = state.decisionAugmentQuery.trim().toLowerCase();
+  const heroAugmentNames = new Set(hero.coreAugments.map((augment) => augment.name));
+  const visible = augmentRankings
+    .filter((augment) => {
+      const text = `${augment.name} ${augment.nameEn || ""}`.toLowerCase();
+      return !query || text.includes(query);
+    })
+    .sort((left, right) => Number(heroAugmentNames.has(right.name)) - Number(heroAugmentNames.has(left.name)) || left.rank - right.rank)
+    .slice(0, 10);
+  const selected = new Set(state.selectedAugments.map(String));
+  decisionAugmentResults.innerHTML = visible.length
+    ? visible.map((augment) => `<button class="decision-augment-option ${selected.has(String(augment.id)) ? "selected" : ""}" data-decision-augment="${augment.id}" role="option" aria-selected="${selected.has(String(augment.id))}"><span><strong>${augment.name}</strong><small>${augment.rarity || "海克斯"} · ${augment.heroes.slice(0, 3).join(" / ")}</small></span><b>${selected.has(String(augment.id)) ? "已加入" : "加入"}</b></button>`).join("")
+    : `<div class="scenario-no-result">没有找到这个海克斯</div>`;
+  const selectedAugments = state.selectedAugments
+    .map((id) => augmentRankings.find((augment) => String(augment.id) === String(id)))
+    .filter(Boolean);
+  decisionSelectedAugments.innerHTML = selectedAugments.length
+    ? selectedAugments.map((augment) => `<button class="decision-selected-augment" data-remove-decision-augment="${augment.id}">${augment.name}<span>×</span></button>`).join("")
+    : `<span class="decision-empty">暂未选择，先选到的海克斯可以直接加入</span>`;
+}
+
+function renderDecisionThreatOptions() {
+  const hero = heroes.find((item) => item.id === state.scenarioHero) || heroes[0];
+  const validThreats = Object.entries(decisionRules).filter(([, rule]) => hero.situations.some((situation) => situation.id === rule.situationId));
+  const threatEntries = validThreats.length ? validThreats : Object.entries(decisionRules);
+  const validIds = new Set(threatEntries.map(([id]) => id));
+  state.scenarioThreats = state.scenarioThreats.filter((id) => validIds.has(id));
+  if (!state.scenarioThreats.length && threatEntries[0]) state.scenarioThreats = [threatEntries[0][0]];
+  scenarioThreat.innerHTML = threatEntries.map(([id, rule]) => `<label class="threat-option"><input type="checkbox" value="${id}" ${state.scenarioThreats.includes(id) ? "checked" : ""} /><span><strong>${rule.label}</strong><small>${rule.note}</small></span></label>`).join("");
+}
+
+function renderDecisionOwnedItems() {
+  const hero = heroes.find((item) => item.id === state.scenarioHero) || heroes[0];
+  const guides = augmentBuildGuides[hero.id] || [];
+  const allItems = uniqueDecisionItems([
+    ...hero.builds.flatMap((build) => build.items),
+    ...hero.situations.flatMap((situation) => situation.items),
+    ...guides.flatMap((guide) => guide.items),
+  ]);
+  const validKeys = new Set(allItems.map(decisionItemKey));
+  state.ownedItems = state.ownedItems.filter((key) => validKeys.has(key));
+  decisionOwnedItems.innerHTML = allItems.map((item) => `<option value="${decisionItemKey(item)}" ${state.ownedItems.includes(decisionItemKey(item)) ? "selected" : ""}>${decisionItemName(item)}</option>`).join("");
+}
+
+function buildDecision() {
+  const hero = heroes.find((item) => item.id === state.scenarioHero) || heroes[0];
+  const selectedAugments = selectedDecisionAugmentNames();
+  const threatEntries = state.scenarioThreats.map((id) => [id, decisionRules[id]]).filter(([, rule]) => rule);
+  const matchingGuides = (augmentBuildGuides[hero.id] || [])
+    .filter((guide) => guide.requiredAugments.every((augment) => selectedAugments.includes(augment)))
+    .sort((left, right) => right.requiredAugments.length - left.requiredAugments.length);
+  const matchedGuide = matchingGuides[0];
+  const prioritized = [];
+  const addPriority = (items, reason) => items.forEach((item) => prioritized.push({ item, reason }));
+
+  if (matchedGuide) addPriority(matchedGuide.items, `命中「${matchedGuide.requiredAugments.join(" + ")}」联动：${matchedGuide.note}`);
+  threatEntries.forEach(([, rule]) => {
+    const situation = hero.situations.find((item) => item.id === rule.situationId);
+    if (situation) addPriority(situation.items, `针对${rule.label}：${rule.note}`);
+  });
+  addPriority(hero.builds.flatMap((build) => build.items), `回到${hero.builds[0]?.label || "英雄统计主线"}，作为没有特殊联动时的基础路线。`);
+
+  const owned = new Set(state.ownedItems);
+  const seen = new Set();
+  const remaining = prioritized.filter(({ item }) => {
+    const key = decisionItemKey(item);
+    if (owned.has(key) || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  const avoidItems = uniqueDecisionItems(threatEntries.flatMap(([, rule]) => rule.avoidItems || []))
+    .filter((item) => !remaining.some(({ item: candidate }) => decisionItemKey(candidate) === decisionItemKey(item)));
+  const fallbackItems = uniqueDecisionItems(hero.builds[0]?.items || []);
+  const fallbackText = matchedGuide
+    ? `如果没有「${matchedGuide.requiredAugments.join(" + ")}」，回到${hero.builds[0]?.label || "英雄统计主线"}：${fallbackItems.map(decisionItemName).join(" → ")}`
+    : `当前没有匹配到该英雄的公开海克斯联动攻略，先按${hero.builds[0]?.label || "英雄统计主线"}购买：${fallbackItems.map(decisionItemName).join(" → ")}`;
+  return { hero, selectedAugments, threatEntries, matchedGuide, remaining, avoidItems, fallbackText };
 }
 
 function bindAssetFallbacks() {
@@ -932,26 +988,38 @@ function renderScenarioHeroOptions() {
     ? visible.map((hero) => `<button class="scenario-hero-option ${hero.id === state.scenarioHero ? "selected" : ""}" data-scenario-hero="${hero.id}" role="option" aria-selected="${hero.id === state.scenarioHero}"><strong>${hero.name}</strong><small>${hero.alias} · ${hero.roles.join(" / ")}</small></button>`).join("")
     : `<div class="scenario-no-result">没有找到这个英雄</div>`;
   renderScenarioThreatOptions();
+  renderDecisionAugments();
+  renderDecisionOwnedItems();
 }
 
 function renderScenarioThreatOptions() {
-  const hero = heroes.find((item) => item.id === state.scenarioHero) || heroes[0];
-  scenarioThreat.innerHTML = hero.situations.map((situation) => `<option value="${situation.id}">${situation.label}</option>`).join("");
-  if (!hero.situations.some((situation) => situation.id === state.scenarioThreat)) state.scenarioThreat = hero.situations[0].id;
-  scenarioThreat.value = state.scenarioThreat;
+  renderDecisionThreatOptions();
   renderScenario();
 }
 
 function renderScenario() {
-  const hero = heroes.find((item) => item.id === state.scenarioHero) || heroes[0];
-  const situation = hero.situations.find((item) => item.id === state.scenarioThreat) || hero.situations[0];
-  const sourceStatus = hero.dataState === "统计快照" ? "统计 + 情境规则" : "编辑草案";
+  const decision = buildDecision();
+  const sourceStatus = decision.matchedGuide ? "海克斯联动 + 情境规则" : decision.hero.dataState === "统计快照" ? "统计主线 + 情境规则" : "编辑草案";
+  const threatLabels = decision.threatEntries.map(([, rule]) => rule.label).join("、") || "未选择威胁";
+  const selectedAugmentMarkup = decision.selectedAugments.length ? decision.selectedAugments.map((augment) => `<em>${augment}</em>`).join("") : "<em>未选择海克斯</em>";
+  const now = decision.remaining[0];
+  const next = decision.remaining[1];
+  const avoidMarkup = decision.avoidItems.length
+    ? decision.avoidItems.map((item) => decisionItemCard(item, "不建议优先", item.reason)).join("")
+    : `<p class="decision-muted">当前条件没有明确的禁出装规则，不强行制造结论。</p>`;
   scenarioResult.innerHTML = `
     <div class="scenario-result-top"><span class="eyebrow">RECOMMENDATION</span><span class="status-pill">${sourceStatus}</span></div>
-    <h3>${hero.name} · ${situation.label}</h3>
-    <p>${situation.note}</p>
-    <div class="scenario-items">${situation.items.map((item) => scenarioItemMarkup(item, situation)).join("")}</div>
-    <small>${hero.dataState === "统计快照" ? "装备来自英雄专属统计；情境标签用于帮助你在对局中从统计候选池做决策。" : "正式版本将补充装备 ID、样本量和数据来源。"}</small>
+    <h3>${decision.hero.name} · ${threatLabels}</h3>
+    <div class="decision-context"><span>已选海克斯</span><div>${selectedAugmentMarkup}</div></div>
+    <div class="decision-buy-grid">
+      ${now ? decisionItemCard(now.item, "现在买", now.reason) : `<article class="decision-buy-card"><span class="decision-order">现在买</span><strong>暂时没有可用推荐</strong><small>请先选择英雄或等待统计数据加载。</small></article>`}
+      ${next ? decisionItemCard(next.item, "下一件", next.reason) : `<article class="decision-buy-card"><span class="decision-order">下一件</span><strong>暂无</strong><small>可以继续补充对局信息。</small></article>`}
+    </div>
+    <h4 class="decision-subheading">哪些装备不要优先出</h4>
+    <div class="decision-avoid-grid">${avoidMarkup}</div>
+    <h4 class="decision-subheading">没有联动海克斯时</h4>
+    <p class="decision-fallback">${decision.fallbackText}</p>
+    <small class="decision-disclaimer">初版按海克斯联动攻略、英雄统计路线和威胁规则合并；“不建议优先”是编辑规则，不等同于绝对禁用。</small>
   `;
   bindAssetFallbacks();
 }
@@ -996,12 +1064,14 @@ async function hydrateAssets() {
 
 async function hydrateGuideData() {
   try {
-    const [payload, localization, guidePayload] = await Promise.all([
+    const [payload, localization, guidePayload, decisionPayload] = await Promise.all([
       fetch("./data/aram-mayhem-26.19.json").then((response) => response.json()),
       fetch("./data/zh-cn-localization.json").then((response) => response.json()),
       fetch("./data/augment-build-guides.json").then((response) => response.json()),
+      fetch("./data/decision-rules.json").then((response) => response.json()),
     ]);
     augmentBuildGuides = simplifyData(guidePayload.guides || {});
+    decisionRules = simplifyData(decisionPayload.threats || {});
     const augmentNames = localization.entries || {};
     const localizeAugment = (augment) => {
       const normalized = simplifyData(augment);
@@ -1071,12 +1141,45 @@ scenarioHeroResults.addEventListener("click", (event) => {
   if (!button) return;
   state.scenarioHero = button.dataset.scenarioHero;
   state.scenarioHeroQuery = heroes.find((hero) => hero.id === state.scenarioHero)?.name || "";
-  state.scenarioThreat = "frontline";
+  state.scenarioThreats = ["frontline"];
+  state.selectedAugments = [];
+  state.ownedItems = [];
   renderScenarioHeroOptions();
 });
 
 scenarioThreat.addEventListener("change", (event) => {
-  state.scenarioThreat = event.target.value;
+  if (!event.target.matches("input[type=checkbox]")) return;
+  state.scenarioThreats = [...scenarioThreat.querySelectorAll("input:checked")].map((input) => input.value);
+  renderScenario();
+});
+
+decisionAugmentSearch.addEventListener("input", (event) => {
+  state.decisionAugmentQuery = event.target.value;
+  renderDecisionAugments();
+});
+
+decisionAugmentResults.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-decision-augment]");
+  if (!button) return;
+  const id = String(button.dataset.decisionAugment);
+  state.selectedAugments = state.selectedAugments.includes(id)
+    ? state.selectedAugments.filter((item) => item !== id)
+    : [...state.selectedAugments, id];
+  renderDecisionAugments();
+  renderScenario();
+});
+
+decisionSelectedAugments.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-remove-decision-augment]");
+  if (!button) return;
+  const id = String(button.dataset.removeDecisionAugment);
+  state.selectedAugments = state.selectedAugments.filter((item) => item !== id);
+  renderDecisionAugments();
+  renderScenario();
+});
+
+decisionOwnedItems.addEventListener("change", () => {
+  state.ownedItems = [...decisionOwnedItems.selectedOptions].map((option) => option.value);
   renderScenario();
 });
 
