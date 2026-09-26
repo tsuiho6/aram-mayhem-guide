@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "patch": "26.19",
   "status": "draft",
-  "description": "第一版页面使用的玩法草案。统计字段接入前不得当作正式版本答案。",
+  "description": "决策查询原型使用的英雄草案。强度、海克斯与出装字段接入正式统计前不得当作版本答案。",
   "champions": [
     {
       "id": "jax",
@@ -26,7 +26,7 @@
       "sourceRefs": ["curated-note"]
     },
     {
-      "id": "tahm-kench",
+        "id": "tahm",
       "name": "河流之王",
       "roles": ["frontline"],
       "contentStatus": "draft",
