@@ -3,116 +3,162 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="海克斯大乱斗英雄玩法、海克斯联动与出装路线查询库" />
-    <title>海克斯大乱斗 · 玩法库</title>
+    <meta name="description" content="海克斯大乱斗英雄强度、海克斯选择与情境出装决策库" />
+    <title>海斗决策库 · ARAM Mayhem</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <div class="app-shell">
       <header class="topbar">
-        <a class="brand" href="./">
+        <a class="brand" href="./" aria-label="返回海斗决策库首页">
           <span class="brand-mark">✦</span>
           <span>
-            <strong>海斗玩法库</strong>
-            <small>ARAM: MAYHEM FIELD GUIDE</small>
+            <strong>海斗决策库</strong>
+            <small>ARAM: MAYHEM DATA DESK</small>
           </span>
         </a>
         <nav class="topnav" aria-label="主导航">
-          <a class="active" href="#heroes">英雄库</a>
-          <a href="#augments">海克斯</a>
+          <a class="active" href="#heroes">英雄强度</a>
+          <a href="#augments">海克斯排行</a>
+          <a href="#scenarios">情境出装</a>
           <a href="#sources">数据说明</a>
         </nav>
-        <div class="patch-pill"><span></span> 内容版本 26.19 · 草案</div>
+        <div class="patch-pill"><span></span> 26.19 · 编辑草案</div>
       </header>
 
       <main>
-        <section class="hero-banner">
-          <div class="eyebrow">BUILD LIBRARY / DECISION NOTES</div>
-          <h1>先看懂玩法，再决定<br /><em>这局怎么构筑。</em></h1>
-          <p>把英雄机制、海克斯联动、出装路线和对局情境整理成一套方便查阅的知识库。</p>
-          <div class="banner-actions">
-            <a class="primary-button" href="#heroes">浏览英雄玩法 <span>→</span></a>
-            <a class="text-button" href="#sources">查看数据口径</a>
+        <section class="intro-row">
+          <div>
+            <div class="eyebrow">ARAM MAYHEM / DECISION DATABASE</div>
+            <h1>这一局，先决定<br /><em>海克斯与出装。</em></h1>
+            <p>按英雄、海克斯和对面阵容查找构筑方向。统计榜单接入前，所有内容明确标记为编辑草案。</p>
           </div>
-          <div class="banner-orbit orbit-one"></div>
-          <div class="banner-orbit orbit-two"></div>
-          <div class="banner-spark spark-one">✦</div>
-          <div class="banner-spark spark-two">·</div>
+          <div class="intro-note">
+            <span class="note-dot"></span>
+            <div>
+              <strong>当前数据状态</strong>
+              <p>玩法结构已整理，统计快照待接入</p>
+            </div>
+          </div>
         </section>
 
-        <section class="workspace" id="heroes">
+        <section class="control-bar" aria-label="查询条件">
+          <label class="search-box">
+            <span>⌕</span>
+            <input id="searchInput" type="search" placeholder="搜索英雄、海克斯或出装关键词" />
+          </label>
+          <label class="select-box">
+            <span>版本</span>
+            <select id="patchSelect" aria-label="选择版本">
+              <option>26.19 · 草案</option>
+              <option disabled>正式统计 · 待接入</option>
+            </select>
+          </label>
+          <label class="select-box sort-box">
+            <span>排序</span>
+            <select id="sortSelect" aria-label="英雄排序">
+              <option value="tier">强度评级</option>
+              <option value="name">英雄名称</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="summary-grid" aria-label="数据概览">
+          <article class="summary-card">
+            <span>英雄草案</span>
+            <strong id="heroCount">4</strong>
+            <small>覆盖代表性玩法</small>
+          </article>
+          <article class="summary-card accent-violet">
+            <span>海克斯条目</span>
+            <strong id="augmentCount">—</strong>
+            <small>编辑推荐榜</small>
+          </article>
+          <article class="summary-card">
+            <span>统计快照</span>
+            <strong>待接入</strong>
+            <small>不伪造胜率和样本</small>
+          </article>
+          <article class="summary-card accent-gold">
+            <span>更新口径</span>
+            <strong>版本绑定</strong>
+            <small>每条结论保留来源</small>
+          </article>
+        </section>
+
+        <section class="section-block" id="heroes">
           <div class="section-heading">
             <div>
-              <div class="eyebrow">CHAMPION LIBRARY</div>
-              <h2>英雄玩法库</h2>
+              <div class="eyebrow">CHAMPION RANKING</div>
+              <h2>英雄强度排行</h2>
             </div>
-            <div class="result-count" id="resultCount">4 个草案</div>
+            <div class="section-meta"><span class="status-pill">编辑强度榜</span><span id="resultCount">4 个英雄</span></div>
           </div>
 
-          <div class="toolbar">
-            <label class="search-box">
-              <span>⌕</span>
-              <input id="searchInput" type="search" placeholder="搜索英雄、玩法或海克斯" />
-            </label>
-            <div class="filter-group" id="roleFilters" aria-label="英雄定位筛选">
-              <button class="filter active" data-role="全部">全部</button>
-              <button class="filter" data-role="战士">战士</button>
-              <button class="filter" data-role="法师">法师</button>
-              <button class="filter" data-role="射手">射手</button>
-              <button class="filter" data-role="前排">前排</button>
-            </div>
+          <div class="role-filters" id="roleFilters" aria-label="英雄定位筛选">
+            <button class="filter active" data-role="全部">全部</button>
+            <button class="filter" data-role="战士">战士</button>
+            <button class="filter" data-role="法师">法师</button>
+            <button class="filter" data-role="射手">射手</button>
+            <button class="filter" data-role="前排">前排</button>
           </div>
 
-          <div class="library-layout">
-            <div class="hero-grid" id="heroGrid" aria-live="polite"></div>
+          <div class="ranking-layout">
+            <div class="ranking-panel">
+              <div class="ranking-head"><span># / 英雄</span><span>强度</span><span>核心海克斯</span><span>统计状态</span></div>
+              <div class="ranking-list" id="heroList" aria-live="polite"></div>
+            </div>
             <aside class="detail-panel" id="detailPanel" aria-live="polite"></aside>
           </div>
         </section>
 
-        <section class="method-section" id="augments">
-          <div class="section-heading compact">
+        <section class="section-block" id="augments">
+          <div class="section-heading">
             <div>
-              <div class="eyebrow">HOW TO READ</div>
-              <h2>推荐不是一个答案</h2>
+              <div class="eyebrow">AUGMENT RANKING</div>
+              <h2>海克斯推荐榜</h2>
             </div>
+            <div class="section-meta"><span class="status-pill violet">编辑榜草案</span><span>按英雄联动整理</span></div>
           </div>
-          <div class="method-grid">
-            <article class="method-card">
-              <span class="method-number">01</span>
-              <h3>先看海克斯改变什么</h3>
-              <p>它是强化核心技能、改变伤害类型，还是让英雄获得新的生存方式？</p>
-            </article>
-            <article class="method-card accent-card">
-              <span class="method-number">02</span>
-              <h3>再看队伍缺什么</h3>
-              <p>队伍缺前排、开团、持续伤害或反制手段时，个人最强不一定是团队最优。</p>
-            </article>
-            <article class="method-card">
-              <span class="method-number">03</span>
-              <h3>最后决定出装</h3>
-              <p>同一个海克斯，在不同敌方阵容和装备顺序下，可能对应完全不同的玩法。</p>
-            </article>
+          <div class="augment-table" id="augmentList"></div>
+        </section>
+
+        <section class="section-block" id="scenarios">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">SITUATION BUILDER</div>
+              <h2>情境出装</h2>
+            </div>
+            <div class="section-meta">英雄 + 对面威胁 → 出装方向</div>
+          </div>
+          <div class="scenario-layout">
+            <div class="scenario-controls">
+              <label class="select-box wide-select"><span>我的英雄</span><select id="scenarioHero"></select></label>
+              <label class="select-box wide-select"><span>对面威胁</span><select id="scenarioThreat"></select></label>
+              <p>这里先展示玩法结构；正式数据接入后，会把统计信号和人工推荐分开展示。</p>
+            </div>
+            <div class="scenario-result" id="scenarioResult"></div>
           </div>
         </section>
 
         <section class="sources-section" id="sources">
           <div>
             <div class="eyebrow">DATA PROVENANCE</div>
-            <h2>让每个结论都能追溯</h2>
-            <p>网站会区分统计信号、版本资料和人工玩法笔记，不把不同版本或不同来源的数据混在一起。</p>
+            <h2>先看结论，再看它从哪里来</h2>
+            <p>编辑推荐、版本资料和统计快照会分开显示。当前页面的强度与海克斯评级是结构草案，不代表正式胜率结论。</p>
           </div>
           <div class="source-chips">
             <span>版本绑定</span>
+            <span>样本量</span>
             <span>来源标记</span>
-            <span>样本门槛</span>
-            <span>玩法编辑</span>
+            <span>小样本提示</span>
           </div>
         </section>
       </main>
 
       <footer class="footer">
-        <span>海斗玩法库 · 研究版</span>
-        <span>数据与玩法仍在整理中</span>
+        <span>海斗决策库 · 研究版</span>
+        <span>玩法编辑与统计数据分开维护</span>
       </footer>
     </div>
     <script type="module" src="./app.js"></script>
