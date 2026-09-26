@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "curated-note",
+      "name": "人工玩法笔记",
+      "kind": "editorial",
+      "status": "draft",
+      "scope": "英雄机制、海克斯联动、情境分析",
+      "note": "需要绑定版本，并经过内容校验。"
+    },
+    {
+      "id": "static-game-data",
+      "name": "Riot Data Dragon / CommunityDragon",
+      "kind": "static-data",
+      "status": "planned",
+      "scope": "英雄、装备、技能、图标和基础模式数据",
+      "note": "接入时记录具体版本和下载时间。"
+    },
+    {
+      "id": "community-snapshot",
+      "name": "脱敏社区对局快照",
+      "kind": "match-data",
+      "status": "planned",
+      "scope": "去身份化的 Mayhem 对局统计",
+      "note": "只接受带 queue、patch、region、时间范围和去重说明的快照。"
+    }
+  ]
+}
