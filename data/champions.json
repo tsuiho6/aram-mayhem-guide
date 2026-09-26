@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "patch": "26.19",
+  "status": "draft",
+  "description": "精选英雄的内容索引。完整 26.19 英雄与海克斯目录位于 data/catalog.js，英雄统计与出装快照位于 aram-mayhem-26.19.json。",
+  "catalogFile": "catalog.js",
+  "catalogChampionCount": 173,
+  "catalogAugmentCount": 201,
+  "statisticsSnapshotFile": "aram-mayhem-26.19.json",
+  "statisticsChampionCount": 173,
+  "statisticsAugmentCount": 211,
+  "champions": [
+    {
+      "id": "jax",
+      "name": "武器大师",
+      "roles": ["fighter", "frontline"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note"]
+    },
+    {
+      "id": "yasuo",
+      "name": "疾风剑豪",
+      "roles": ["fighter", "marksman"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note"]
+    },
+    {
+      "id": "teemo",
+      "name": "迅捷斥候",
+      "roles": ["mage", "marksman"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note"]
+    },
+    {
+      "id": "tahm",
+      "name": "河流之王",
+      "roles": ["frontline"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note"]
+    },
+    {
+      "id": "ornn",
+      "name": "山隐之焰",
+      "roles": ["frontline", "fighter"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "kaisa",
+      "name": "虚空之女",
+      "roles": ["marksman", "mage"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "morgana",
+      "name": "堕落天使",
+      "roles": ["mage"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "galio",
+      "name": "正义巨像",
+      "roles": ["frontline", "mage"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "ashe",
+      "name": "寒冰射手",
+      "roles": ["marksman"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "ahri",
+      "name": "九尾妖狐",
+      "roles": ["mage"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "hecarim",
+      "name": "战争之影",
+      "roles": ["fighter", "frontline"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "masteryi",
+      "name": "无极剑圣",
+      "roles": ["fighter", "marksman"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "riven",
+      "name": "放逐之刃",
+      "roles": ["fighter"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    },
+    {
+      "id": "leona",
+      "name": "曙光女神",
+      "roles": ["frontline"],
+      "contentStatus": "draft",
+      "sourceRefs": ["curated-note", "mayhem-public-reference"]
+    }
+  ]
+}

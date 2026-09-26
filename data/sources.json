@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "curated-note",
+      "name": "人工玩法笔记",
+      "kind": "editorial",
+      "status": "draft",
+      "scope": "英雄机制、海克斯联动、情境分析",
+      "note": "需要绑定版本，并经过内容校验。"
+    },
+    {
+      "id": "static-game-data",
+      "name": "Riot Data Dragon / CommunityDragon",
+      "kind": "static-data",
+      "status": "planned",
+      "scope": "英雄、装备、技能、图标和基础模式数据",
+      "note": "接入时记录具体版本和下载时间。"
+    },
+    {
+      "id": "community-snapshot",
+      "name": "脱敏社区对局快照",
+      "kind": "match-data",
+      "status": "planned",
+      "scope": "去身份化的 Mayhem 对局统计",
+      "note": "只接受带 queue、patch、region、时间范围和去重说明的快照。"
+    },
+    {
+      "id": "mayhem-public-reference",
+      "name": "公开海克斯大乱斗参考页",
+      "kind": "reference",
+      "status": "reference-only",
+      "scope": "装备名称、常见出装顺序和海克斯组合线索",
+      "note": "只用于整理候选路线，不直接导入其胜率或梯队结论；正式数据仍需版本化快照。"
+    },
+    {
+      "id": "mayhem-catalog-26-19",
+      "name": "ARAM Mayhem 26.19 目录快照",
+      "kind": "reference",
+      "status": "reference-only",
+      "scope": "173 位英雄名册与白银、黄金、棱彩海克斯目录",
+      "note": "用于补齐查询目录；公开页面的 live / retired 口径可能存在差异，正式榜单需进一步核对。"
+    },
+    {
+      "id": "aram-mayhem-database-26-19",
+      "name": "Lanternko / ARAM-Mayhem-Database",
+      "kind": "community-snapshot",
+      "status": "imported-local",
+      "scope": "173 位英雄的胜率、选择率推导、颜色分组海克斯、英雄专属海克斯和装备统计",
+      "patch": "26.19（源快照标识 16.19）",
+      "url": "https://github.com/Lanternko/ARAM-Mayhem-Database",
+      "note": "公开玩家客户端对局聚合；站内将统计字段与情境决策规则分开显示。"
+    }
+  ]
+}

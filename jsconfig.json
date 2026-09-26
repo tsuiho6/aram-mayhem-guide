@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "strict": false,
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM"],
+    "skipLibCheck": true
+  },
+  "include": ["app.js", "types.js", "data/catalog.js"],
+  "exclude": ["data/aram-mayhem-26.19.json"]
+}

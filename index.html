@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="海克斯大乱斗英雄强度、海克斯选择与情境出装决策库" />
+    <title>海斗决策库 · ARAM Mayhem</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="返回海斗决策库首页">
+          <span class="brand-mark">✦</span>
+          <span>
+            <strong>海斗决策库</strong>
+            <small>ARAM: MAYHEM DATA DESK</small>
+          </span>
+        </a>
+        <nav class="topnav" aria-label="主导航">
+          <a class="active" href="#heroes">英雄强度</a>
+          <a href="#augments">海克斯排行</a>
+          <a href="#scenarios">情境出装</a>
+          <a href="#sources">数据说明</a>
+        </nav>
+        <div class="patch-pill"><span></span> 26.19 · 编辑草案</div>
+      </header>
+
+      <main>
+        <section class="intro-row">
+          <div>
+            <div class="eyebrow">ARAM MAYHEM / DECISION DATABASE</div>
+            <h1>这一局，先决定<br /><em>海克斯与出装。</em></h1>
+            <p>按英雄、海克斯和对面阵容查找构筑方向。英雄强度与核心路线来自版本快照，情境分支单独标记推导口径。</p>
+          </div>
+          <div class="intro-note">
+            <span class="note-dot"></span>
+            <div>
+              <strong>当前数据状态</strong>
+              <p>173 位英雄 · 211 个海克斯统计快照</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="control-bar" aria-label="查询条件">
+          <label class="search-box">
+            <span>⌕</span>
+            <input id="searchInput" type="search" placeholder="搜索英雄、海克斯或出装关键词" />
+          </label>
+          <label class="select-box">
+            <span>版本</span>
+            <select id="patchSelect" aria-label="选择版本">
+              <option>26.19 · 统计快照</option>
+              <option disabled>下一版本 · 待更新</option>
+            </select>
+          </label>
+          <label class="select-box sort-box">
+            <span>排序</span>
+            <select id="sortSelect" aria-label="英雄排序">
+              <option value="tier">强度评级</option>
+              <option value="name">英雄名称</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="summary-grid" aria-label="数据概览">
+          <article class="summary-card">
+            <span>英雄目录</span>
+            <strong id="heroCount">173</strong>
+            <small>当前版本完整名册</small>
+          </article>
+          <article class="summary-card accent-violet">
+            <span>海克斯条目</span>
+            <strong id="augmentCount">211</strong>
+            <small>按白银 / 黄金 / 棱彩分类</small>
+          </article>
+          <article class="summary-card">
+            <span>统计快照</span>
+            <strong>待接入</strong>
+            <small>不伪造胜率和样本</small>
+          </article>
+          <article class="summary-card accent-gold">
+            <span>更新口径</span>
+            <strong>版本绑定</strong>
+            <small>每条结论保留来源</small>
+          </article>
+        </section>
+
+        <section class="section-block" id="heroes">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">CHAMPION RANKING</div>
+              <h2>英雄强度排行</h2>
+            </div>
+            <div class="section-meta"><span class="status-pill">完整名册 · 统计快照</span><span id="resultCount">173 个英雄</span></div>
+          </div>
+
+          <div class="role-filters" id="roleFilters" aria-label="英雄定位筛选">
+            <button class="filter active" data-role="全部">全部</button>
+            <button class="filter" data-role="战士">战士</button>
+            <button class="filter" data-role="法师">法师</button>
+            <button class="filter" data-role="射手">射手</button>
+            <button class="filter" data-role="前排">前排</button>
+            <button class="filter" data-role="刺客">刺客</button>
+            <button class="filter" data-role="辅助">辅助</button>
+          </div>
+
+          <div class="ranking-layout">
+            <div class="ranking-panel">
+              <div class="ranking-head"><span># / 英雄</span><span>强度</span><span>核心海克斯</span><span>统计状态</span></div>
+              <div class="ranking-list" id="heroList" aria-live="polite"></div>
+            </div>
+            <aside class="detail-panel" id="detailPanel" aria-live="polite"></aside>
+          </div>
+        </section>
+
+        <section class="section-block" id="augments">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">AUGMENT RANKING</div>
+              <h2>海克斯推荐榜</h2>
+            </div>
+            <div class="section-meta"><span class="status-pill violet">26.19 统计快照</span><span>适配英雄不足处标注角色补位</span></div>
+          </div>
+          <div class="augment-table" id="augmentList"></div>
+        </section>
+
+        <section class="section-block" id="scenarios">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">SITUATION BUILDER</div>
+              <h2>情境出装</h2>
+            </div>
+            <div class="section-meta">英雄 + 对面威胁 → 出装方向</div>
+          </div>
+          <div class="scenario-layout">
+            <div class="scenario-controls">
+              <label class="select-box wide-select"><span>我的英雄</span><select id="scenarioHero"></select></label>
+              <label class="select-box wide-select"><span>对面威胁</span><select id="scenarioThreat"></select></label>
+              <p>这里把统计主线和情境规则分开展示；情境路线用于帮助你根据对局做购买决策，不等同于阵容分层胜率。</p>
+            </div>
+            <div class="scenario-result" id="scenarioResult"></div>
+          </div>
+        </section>
+
+        <section class="sources-section" id="sources">
+          <div>
+            <div class="eyebrow">DATA PROVENANCE</div>
+            <h2>先看结论，再看它从哪里来</h2>
+            <p>编辑推荐、版本资料和统计快照会分开显示。英雄胜率、样本量与英雄专属海克斯来自公开聚合数据，来源链接保留在页面数据中。</p>
+          </div>
+          <div class="source-chips">
+            <span>版本绑定</span>
+            <span>样本量</span>
+            <span>来源标记</span>
+            <span>小样本提示</span>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>海斗决策库 · 研究版</span>
+        <span>玩法编辑与统计数据分开维护</span>
+      </footer>
+    </div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
