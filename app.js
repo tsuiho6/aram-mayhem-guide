@@ -625,7 +625,7 @@ let buildOrderOverrides = {};
 let decisionRules = {};
 
 const tierOrder = { SS: 0, S: 1, A: 2, B: 3, C: 4, 待定: 9 };
-const state = { query: "", role: "全部", sort: "tier", selected: "jax", augmentColor: "白银", scenarioHero: "jax", scenarioHeroQuery: "", scenarioThreats: ["frontline"], decisionAugmentQuery: "", decisionAugmentRarity: "全部", selectedAugments: [], ownedItems: [] };
+const state = { query: "", role: "全部", sort: "tier", selected: "jax", augmentColor: "白银", selectedAugmentId: "", scenarioHero: "jax", scenarioHeroQuery: "", scenarioThreats: ["frontline"], decisionAugmentQuery: "", decisionAugmentRarity: "全部", selectedAugments: [], ownedItems: [] };
 const championKeys = { jax: "Jax", yasuo: "Yasuo", teemo: "Teemo", tahm: "TahmKench", ornn: "Ornn", kaisa: "Kaisa", morgana: "Morgana", galio: "Galio", ashe: "Ashe", ahri: "Ahri", hecarim: "Hecarim", masteryi: "MasterYi", riven: "Riven", leona: "Leona", ...Object.fromEntries(championSeeds.map((champion) => [champion.id, champion.key])) };
 const championIds = { jax: 24, yasuo: 157, teemo: 17, tahm: 223, ornn: 516, kaisa: 145, morgana: 25, galio: 3, ashe: 22, ahri: 103, hecarim: 120, masteryi: 11, riven: 92, leona: 89 };
 /** @type {Record<string, number>} */
@@ -1031,19 +1031,90 @@ function renderDetail() {
   bindAssetFallbacks();
 }
 
+/** @param {AugmentRanking} augment @param {string} heroName @returns {Hero|undefined} */
+function findAugmentHero(augment, heroName) {
+  const detail = (augment.heroDetails || []).find((item) => item.championName === heroName);
+  return heroes.find((hero) => hero.id === detail?.championId) || heroes.find((hero) => hero.name === heroName || hero.alias === heroName);
+}
+
+/** @param {AugmentRanking} augment @param {Hero} hero @returns {AugmentBuildGuide[]} */
+function augmentGuidesForHero(augment, hero) {
+  return (augmentBuildGuides[hero.id] || []).filter((guide) => (guide.requiredAugments || []).some((name) => simplifyText(name) === augment.name));
+}
+
+/** @param {AugmentRanking} augment @param {string} heroName @returns {string} */
+function augmentHeroMetric(augment, heroName) {
+  const detail = (augment.heroDetails || []).find((item) => item.championName === heroName);
+  return detail?.winRate ? `${detail.winRate} · ${detail.sample || 0} 局` : "英雄专属样本待补";
+}
+
+/** @param {AugmentRanking} augment @param {Hero|undefined} hero @param {AugmentBuildGuide|undefined} guide @returns {string} */
+function augmentCopyWarning(augment, hero, guide) {
+  if (guide?.note && /(不要|不宜|不建议|前提|只有|对面|缺乏|无法)/.test(guide.note)) return guide.note;
+  if (!guide) {
+    return augment.recommendationStatus?.includes("角色")
+      ? "当前适配英雄包含角色补位，缺少该英雄的专属联动证据；不要为了海克斯强行改成模板流派。"
+      : "当前没有整理到该英雄的专属联动出装；先沿用英雄主线，再按对面威胁调整。";
+  }
+  return `只有能稳定触发“${augment.name}”的联动时才照搬；如果技能命中或普攻频率不稳定，回到${hero?.name || "该英雄"}的默认主线。`;
+}
+
+/** @param {AugmentRanking} augment @param {string} heroName @param {number} index @returns {string} */
+function augmentHeroPlanMarkup(augment, heroName, index) {
+  const hero = findAugmentHero(augment, heroName);
+  if (!hero) return `<article class="augment-hero-card"><div class="augment-hero-head"><strong>${index + 1}. ${heroName}</strong><small>${augmentHeroMetric(augment, heroName)}</small></div><p class="augment-detail-muted">英雄资料加载后显示具体出装。</p></article>`;
+  const guides = augmentGuidesForHero(augment, hero);
+  const guide = guides[0];
+  const route = hero.builds?.[0];
+  const items = guide?.items || route?.items || [];
+  const linkedAugments = [...new Set(guides.flatMap((item) => item.synergyAugments || []))];
+  const buildMarkup = guide ? buildStageMarkup(items, "synergy") : buildStageMarkup(items, "route", route?.stages, hero);
+  const caution = augmentCopyWarning(augment, hero, guide);
+  return `
+    <article class="augment-hero-card">
+      <div class="augment-hero-head"><div class="augment-hero-title">${avatarMarkup(hero)}<span><strong>${index + 1}. ${hero.name}</strong><small>${hero.alias} · ${hero.roles.join(" / ")}</small></span></div><small>${augmentHeroMetric(augment, heroName)}</small></div>
+      <div class="augment-plan-label">${guide ? `拿到后优先：${guide.title}` : `默认主线：${route?.label || "暂无统计路线"}`}</div>
+      ${buildMarkup}
+      <div class="augment-detail-line"><span>联动海克斯</span>${linkedAugments.length ? linkedAugments.map((item) => `<em>${item}</em>`).join("") : `<small>暂无已整理联动，先按单海克斯路线。</small>`}</div>
+      <div class="augment-caution"><span>不适合直接照搬</span><small>${caution}</small></div>
+    </article>
+  `;
+}
+
+/** @param {AugmentRanking} augment @returns {string} */
+function augmentKey(augment) {
+  return String(augment.id ?? augment.name);
+}
+
+/** @param {AugmentRanking} augment @returns {string} */
+function augmentDetailMarkup(augment) {
+  const heroNames = (augment.heroes || []).slice(0, 3);
+  return `
+    <article class="augment-detail-card">
+      <div class="augment-detail-head"><div><div class="augment-detail-kicker">AUGMENT DETAIL · 点击榜单条目切换</div><h3>${augment.name}</h3><p>${augment.note}</p></div><b class="tier ${augment.tierClass}">${augment.strength || "—"}</b></div>
+      <div class="augment-detail-meta"><span class="color-badge ${augment.color === "棱彩" ? "prismatic" : augment.color === "黄金" ? "gold" : "silver"}">${augment.color}</span><span>全局胜率 ${augment.winRate || "待接入"}</span><span>样本 ${augment.sample || "待接入"}</span><span>${augment.recommendationStatus || "编辑建议"}</span></div>
+      <div class="augment-detail-section-title">最适配的三个英雄 · 拿到后怎么出</div>
+      <div class="augment-hero-plans">${heroNames.length ? heroNames.map((heroName, index) => augmentHeroPlanMarkup(augment, heroName, index)).join("") : `<div class="augment-detail-muted">当前海克斯还没有适配英雄记录。</div>`}</div>
+    </article>
+  `;
+}
+
 function renderAugments() {
   document.querySelector("#augmentCount").textContent = augmentRankings.length;
   const groups = ["白银", "黄金", "棱彩"];
   const colorClass = (color) => color === "棱彩" ? "prismatic" : color === "黄金" ? "gold" : "silver";
   const selectedColor = groups.includes(state.augmentColor) ? state.augmentColor : groups[0];
   const group = augmentRankings.filter((augment) => augment.color === selectedColor).sort((left, right) => left.rank - right.rank);
+  const selectedAugment = group.find((augment) => augmentKey(augment) === String(state.selectedAugmentId)) || group[0];
+  state.selectedAugmentId = selectedAugment ? augmentKey(selectedAugment) : "";
   augmentTabs.innerHTML = groups.map((color) => `<button class="augment-tab ${color === selectedColor ? "active" : ""}" data-augment-color="${color}" role="tab" aria-selected="${color === selectedColor}"><span class="color-badge ${colorClass(color)}">${color}</span><strong>${color}</strong><small>${augmentRankings.filter((augment) => augment.color === color).length} 个</small></button>`).join("");
   document.querySelector("#augmentList").innerHTML = `
     <section class="augment-group">
       <div class="augment-group-heading"><div><span class="color-badge ${colorClass(selectedColor)}">${selectedColor}</span><strong>${selectedColor}海克斯</strong></div><small>每个条目列出最适配的 3 个英雄</small></div>
+      ${selectedAugment ? augmentDetailMarkup(selectedAugment) : `<div class="augment-detail-muted">当前稀有度暂无数据。</div>`}
       <div class="augment-table">
         <div class="augment-head"><span># / 海克斯</span><span>稀有度</span><span>最适配英雄</span><span>联动方向 / 状态</span></div>
-        ${group.map((augment) => `<div class="augment-row"><span class="rank-index">${String(augment.rank).padStart(3, "0")}</span><span class="augment-name"><strong>${augment.name}</strong><small>26.19 目录</small></span><span><b class="color-badge ${colorClass(augment.color)}">${augment.color}</b></span><span class="augment-copy"><strong class="fit-heroes">${augment.heroes.map((hero, index) => `<em>${index + 1}. ${hero}</em>`).join("")}</strong><small>${augment.note} · ${augment.recommendationStatus}</small></span></div>`).join("")}
+        ${group.map((augment) => `<button class="augment-row ${augmentKey(augment) === state.selectedAugmentId ? "selected" : ""}" data-augment-id="${augmentKey(augment)}" aria-pressed="${augmentKey(augment) === state.selectedAugmentId}"><span class="rank-index">${String(augment.rank).padStart(3, "0")}</span><span class="augment-name"><strong>${augment.name}</strong><small>26.19 目录</small></span><span><b class="color-badge ${colorClass(augment.color)}">${augment.color}</b></span><span class="augment-copy"><strong class="fit-heroes">${augment.heroes.map((hero, index) => `<em>${index + 1}. ${hero}</em>`).join("")}</strong><small>${augment.note} · ${augment.recommendationStatus}</small></span></button>`).join("")}
       </div>
     </section>
   `;
@@ -1053,6 +1124,13 @@ function renderAugments() {
       renderAugments();
     });
   });
+  document.querySelector("#augmentList").querySelectorAll("[data-augment-id]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.selectedAugmentId = button.dataset.augmentId;
+      renderAugments();
+    });
+  });
+  bindAssetFallbacks();
 }
 
 function renderScenarioHeroOptions() {

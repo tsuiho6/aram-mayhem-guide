@@ -122,6 +122,7 @@
  * @property {string} [strength]
  * @property {string} [tierClass]
  * @property {string[]} heroes
+ * @property {{championId:string,championName:string,winRate?:string,sample?:number}[]} [heroDetails]
  * @property {string} note
  * @property {string} recommendationStatus
  * @property {string} [winRate]
