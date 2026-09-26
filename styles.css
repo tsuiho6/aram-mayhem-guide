@@ -48,27 +48,27 @@ body::before {
   pointer-events: none;
 }
 .wallpaper-rotator { position: fixed; z-index: -2; inset: 0; overflow: hidden; background: #0a111b; pointer-events: none; }
-.wallpaper-rotator::after { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,12,20,.52), rgba(8,14,23,.78) 48%, rgba(9,14,21,.96)), radial-gradient(ellipse at center, transparent 36%, rgba(3,7,12,.52) 100%); content: ""; }
-.wallpaper { position: absolute; inset: -2%; background-position: center 24%; background-size: cover; background-repeat: no-repeat; filter: saturate(.68) brightness(.58) contrast(.94); opacity: 0; animation: wallpaper-cycle 48s ease-in-out infinite; transform: scale(1.03); }
+.wallpaper-rotator::after { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,12,20,.28), rgba(8,14,23,.52) 48%, rgba(9,14,21,.82)), radial-gradient(ellipse at center, transparent 42%, rgba(3,7,12,.32) 100%); content: ""; }
+.wallpaper { position: absolute; inset: -2%; background-position: center 24%; background-size: cover; background-repeat: no-repeat; filter: saturate(.82) brightness(.78) contrast(1); opacity: 0; animation: wallpaper-cycle 48s ease-in-out infinite; transform: scale(1.03); }
 .wallpaper-lissandra { background-image: url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Lissandra_0.jpg"); }
 .wallpaper-anivia { background-image: url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Anivia_0.jpg"); animation-delay: 12s; }
 .wallpaper-ashe { background-image: url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_0.jpg"); animation-delay: 24s; }
 .wallpaper-viktor { background-image: url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Viktor_0.jpg"); animation-delay: 36s; }
 @keyframes wallpaper-cycle {
   0%, 100% { opacity: 0; }
-  1%, 24% { opacity: .28; }
+  1%, 24% { opacity: .5; }
   25% { opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .wallpaper { animation: none; }
   .wallpaper:not(.wallpaper-lissandra) { display: none; }
-  .wallpaper-lissandra { opacity: .28; }
+  .wallpaper-lissandra { opacity: .5; }
 }
 body::after {
   position: fixed;
   z-index: -1;
   inset: 0;
-  background: radial-gradient(ellipse at center, transparent 42%, rgba(3, 7, 12, .46) 100%);
+  background: radial-gradient(ellipse at center, transparent 46%, rgba(3, 7, 12, .22) 100%);
   content: "";
   pointer-events: none;
 }
@@ -89,7 +89,7 @@ button { cursor: pointer; }
 .patch-pill { margin-left: auto; color: var(--muted); font-size: 12px; white-space: nowrap; }
 .patch-pill span, .note-dot { display: inline-block; width: 7px; height: 7px; margin-right: 8px; border-radius: 50%; background: #82b48e; }
 
-.intro-row { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-top: 16px; padding: 52px 24px 38px; border: 1px solid rgba(130,180,194,.2); border-radius: 6px; background: linear-gradient(90deg, rgba(10,18,29,.94) 0%, rgba(10,18,29,.76) 55%, rgba(10,18,29,.48) 100%); }
+.intro-row { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-top: 16px; padding: 52px 24px 38px; border: 1px solid rgba(130,180,194,.2); border-radius: 6px; background: linear-gradient(90deg, rgba(10,18,29,.88) 0%, rgba(10,18,29,.6) 55%, rgba(10,18,29,.28) 100%); }
 .eyebrow { color: var(--faint); font-size: 11px; font-weight: 600; letter-spacing: .06em; }
 .intro-row h1 { margin: 15px 0 13px; font-size: clamp(32px, 4.4vw, 48px); line-height: 1.12; letter-spacing: -.04em; }
 .intro-row h1 em { color: var(--cyan); font-style: normal; }
