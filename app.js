@@ -4,6 +4,7 @@
 /** @typedef {import("./types.js").HeroAugment} HeroAugment */
 /** @typedef {import("./types.js").BuildItemRef} BuildItemRef */
 /** @typedef {import("./types.js").AugmentRanking} AugmentRanking */
+/** @typedef {import("./types.js").AugmentBuildGuide} AugmentBuildGuide */
 
 import { championSeeds, augmentSeeds } from "./data/catalog.js";
 
@@ -612,6 +613,9 @@ let augmentRankings = augmentSeeds.map((augment) => {
   };
 });
 
+/** @type {Record<string, AugmentBuildGuide[]>} */
+let augmentBuildGuides = {};
+
 const tierOrder = { SS: 0, S: 1, A: 2, B: 3, C: 4, 待定: 9 };
 const state = { query: "", role: "全部", sort: "tier", selected: "jax", augmentColor: "白银", scenarioHero: "jax", scenarioHeroQuery: "", scenarioThreat: "frontline" };
 const championKeys = { jax: "Jax", yasuo: "Yasuo", teemo: "Teemo", tahm: "TahmKench", ornn: "Ornn", kaisa: "Kaisa", morgana: "Morgana", galio: "Galio", ashe: "Ashe", ahri: "Ahri", hecarim: "Hecarim", masteryi: "MasterYi", riven: "Riven", leona: "Leona", ...Object.fromEntries(championSeeds.map((champion) => [champion.id, champion.key])) };
@@ -794,6 +798,22 @@ function itemMarkup(item) {
   return `<em class="item-chip">${imageUrl ? `<img src="${imageUrl}" alt="${label}图标" data-item-image />` : `<span class="item-placeholder">◆</span>`}<span>${label}</span></em>`;
 }
 
+/** @param {AugmentBuildGuide} guide */
+function augmentBuildGuideMarkup(guide) {
+  const requiredAugments = guide.requiredAugments || [];
+  const synergyAugments = guide.synergyAugments || [];
+  return `
+    <article class="synergy-guide">
+      <div class="synergy-guide-head"><strong>${guide.title}</strong><b class="tier violet">${guide.tier}</b></div>
+      <div class="synergy-trigger"><span>触发海克斯</span>${requiredAugments.map((augment) => `<em>${augment}</em>`).join("")}</div>
+      ${synergyAugments.length ? `<div class="synergy-trigger secondary"><span>联动海克斯</span>${synergyAugments.map((augment) => `<em>${augment}</em>`).join("")}</div>` : ""}
+      <div class="item-chips">${guide.items.map(itemMarkup).join("")}</div>
+      <p>${guide.note}</p>
+      <small>${guide.sourceType} · <a href="${guide.source}" target="_blank" rel="noreferrer">查看原文</a></small>
+    </article>
+  `;
+}
+
 function bindAssetFallbacks() {
   document.querySelectorAll("[data-avatar-image]").forEach((image) => {
     image.addEventListener("error", () => {
@@ -864,6 +884,7 @@ function renderHeroList() {
 function renderDetail() {
   const hero = heroes.find((item) => item.id === state.selected) || heroes[0];
   const sourceStatus = hero.dataState === "统计快照" ? "统计快照" : "编辑草案";
+  const synergyGuides = augmentBuildGuides[hero.id] || [];
   detailPanel.innerHTML = `
     <div class="detail-kicker"><span>DECISION CARD</span><span>${sourceStatus}</span></div>
     <div class="detail-title">${avatarMarkup(hero)}<div><h3>${hero.name}</h3><p>${hero.alias} · ${hero.roles.join(" / ")}</p></div><b class="tier ${hero.tierClass}">${hero.tier}</b></div>
@@ -873,6 +894,7 @@ function renderDetail() {
     <div class="augment-stack">${hero.coreAugments.map((item) => `<div class="augment-item"><b class="mini-tier ${item.rarity === "棱彩" ? "ss" : item.rarity === "黄金" ? "s" : ""}">${item.rarity || item.tier || "—"}</b><span><strong>${item.name}</strong><small>${item.note || `${item.winRate || "—"} 胜率 · ${item.sample || 0} 局 · 选择率 ${item.pickRate || "—"}`}</small></span></div>`).join("")}</div>
     <h4>出装决策</h4>
     <div class="decision-table">${hero.builds.map((build) => `<div class="decision-row"><strong>${build.label}</strong><span class="item-chips">${build.items.map(itemMarkup).join("")}</span><small>${build.note}</small></div>`).join("")}</div>
+    ${synergyGuides.length ? `<h4>海克斯联动出装</h4><div class="synergy-intro">只有拿到对应海克斯时才参考；以下为公开编辑攻略，不等同于联合胜率统计。</div><div class="synergy-stack">${synergyGuides.map(augmentBuildGuideMarkup).join("")}</div>` : ""}
     <div class="detail-footnote">数据状态：${sourceStatus}。${hero.source ? ` <a href="${hero.source}" target="_blank" rel="noreferrer">查看该英雄原始快照</a>` : ""}</div>
   `;
   bindAssetFallbacks();
@@ -974,10 +996,12 @@ async function hydrateAssets() {
 
 async function hydrateGuideData() {
   try {
-    const [payload, localization] = await Promise.all([
+    const [payload, localization, guidePayload] = await Promise.all([
       fetch("./data/aram-mayhem-26.19.json").then((response) => response.json()),
       fetch("./data/zh-cn-localization.json").then((response) => response.json()),
+      fetch("./data/augment-build-guides.json").then((response) => response.json()),
     ]);
+    augmentBuildGuides = simplifyData(guidePayload.guides || {});
     const augmentNames = localization.entries || {};
     const localizeAugment = (augment) => {
       const normalized = simplifyData(augment);

@@ -140,6 +140,20 @@ button { cursor: pointer; }
 .item-chip img { width: 18px; height: 18px; border-radius: 3px; object-fit: cover; }
 .item-placeholder { display: inline-grid; place-items: center; width: 18px; height: 18px; color: var(--faint); font-size: 8px; }
 .decision-row > small { display: block; color: var(--muted); font-size: 11px; line-height: 1.55; }
+.synergy-intro { margin: -3px 0 10px; color: var(--faint); font-size: 10px; line-height: 1.55; }
+.synergy-stack { display: grid; gap: 8px; }
+.synergy-guide { padding: 10px; border: 1px solid rgba(184,152,255,.25); border-radius: 5px; background: rgba(184,152,255,.045); }
+.synergy-guide-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.synergy-guide-head strong { font-size: 12px; }
+.synergy-guide-head .tier { min-width: 24px; padding: 3px 5px; font-size: 9px; }
+.synergy-trigger { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 8px; }
+.synergy-trigger span { color: var(--faint); font-size: 10px; }
+.synergy-trigger em { padding: 3px 5px; border-radius: 3px; color: var(--violet); background: rgba(184,152,255,.1); font-size: 10px; font-style: normal; }
+.synergy-trigger.secondary em { color: var(--gold); background: rgba(233,190,105,.1); }
+.synergy-guide .item-chips { margin: 8px 0 6px; }
+.synergy-guide p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.55; }
+.synergy-guide > small { display: block; margin-top: 7px; color: var(--faint); font-size: 9px; }
+.synergy-guide > small a { color: var(--cyan); }
 .detail-footnote { margin-top: 18px; padding: 10px 11px; border-left: 2px solid var(--gold); color: #bcb9b0; background: rgba(233,190,105,.06); font-size: 11px; line-height: 1.6; }
 
 .augment-group { display: grid; gap: 8px; }

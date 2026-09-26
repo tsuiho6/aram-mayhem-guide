@@ -1,0 +1,204 @@
+{
+  "meta": {
+    "source": "ARAMMayhem editorial combo pages",
+    "patch": "26.19",
+    "generatedAt": "2026-09-26",
+    "notice": "这些是公开编辑攻略，不等同于英雄+海克斯+装备联合胜率统计。"
+  },
+  "guides": {
+    "jax": [
+      {
+        "id": "jax-mystic-punch",
+        "title": "秘术冲拳循环",
+        "requiredAugments": ["秘术冲拳"],
+        "tier": "S+",
+        "items": [{ "id": 2510, "name": "黄昏与黎明" }],
+        "note": "普攻减少技能冷却后，黄昏与黎明补充额外普攻特效，让 E 的格挡和控制更容易保持高覆盖率。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/combo/jax-%E7%A7%98%E6%9C%AF%E5%86%B2%E6%8B%B3%E6%AD%A6%E5%99%A8/"
+      }
+    ],
+    "yasuo": [
+      {
+        "id": "yasuo-mystic-punch",
+        "title": "秘术冲拳无限 Q",
+        "requiredAugments": ["秘术冲拳"],
+        "tier": "S+",
+        "items": [{ "id": 3153, "name": "破败王者之刃" }],
+        "note": "亚索 Q 会被视为普攻，秘术冲拳让 Q 频繁刷新；破败王者之刃用于维持护盾和持续作战。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/combo/yasuo-%E7%A7%98%E6%9C%AF%E5%86%B2%E6%8B%B3%E6%97%A0%E9%99%90%E5%90%B9%E9%A3%8E%E6%B5%81/"
+      }
+    ],
+    "yone": [
+      {
+        "id": "yone-mystic-punch",
+        "title": "秘术冲拳持续护盾",
+        "requiredAugments": ["秘术冲拳"],
+        "tier": "S+",
+        "items": [{ "id": 3153, "name": "破败王者之刃" }],
+        "note": "永恩 Q 同样可以触发普攻减冷却；破败王者之刃配合高频 Q，帮助维持护盾和近身输出。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/combo/yone-critical-healing/"
+      }
+    ],
+    "hecarim": [
+      {
+        "id": "hecarim-critical-healing",
+        "title": "会心治疗减伤循环",
+        "requiredAugments": ["会心治疗"],
+        "tier": "S",
+        "items": [{ "id": 6333, "name": "死亡之舞" }],
+        "note": "暴击提高护盾效果，死亡之舞把部分伤害转为流血，护盾可以吸收这段延迟伤害。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/combo/hecarim-%E6%97%A0%E9%99%90%E6%8A%A4%E7%9B%BE%E5%85%8D%E4%BC%A4%E6%B5%81/"
+      }
+    ],
+    "blitzcrank": [
+      {
+        "id": "blitzcrank-ethereal-weapon",
+        "title": "虚幻武器无限电人流",
+        "requiredAugments": ["虚幻武器"],
+        "synergyAugments": ["双生火焰"],
+        "tier": "S+",
+        "items": [{ "id": 2510, "name": "黄昏与黎明" }],
+        "note": "技能触发普攻特效后，黄昏与黎明的额外命中帮助维持 R 被动连锁；页面原文还要求搭配双生火焰。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/combo/blitzcrank-%E8%99%9A%E5%B9%BB%E6%AD%A6%E5%99%A8%E6%97%A0%E9%99%90%E7%94%B5%E4%BA%BA%E6%B5%81/"
+      }
+    ],
+    "seraphine": [
+      {
+        "id": "seraphine-slap-around",
+        "title": "扇巴掌范围控制",
+        "requiredAugments": ["扇巴掌"],
+        "tier": "S",
+        "items": [{ "id": 3116, "name": "瑞莱的冰晶节杖" }],
+        "note": "瑞莱的冰晶节杖让 E 更稳定地施加减速和定身，持续叠加扇巴掌的层数。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/combo/seraphine-%E6%89%87%E5%B7%B4%E6%8E%8C%E5%86%B0%E6%9D%96%E6%B5%81/"
+      },
+      {
+        "id": "seraphine-cruelty",
+        "title": "残忍范围控制",
+        "requiredAugments": ["残忍"],
+        "tier": "S",
+        "items": [{ "id": 3116, "name": "瑞莱的冰晶节杖" }],
+        "note": "瑞莱的冰晶节杖把 E 转成更稳定的范围硬控，从而触发残忍的联动伤害。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/combo/augment/weighted-popoffs/"
+      }
+    ],
+    "chogath": [
+      {
+        "id": "chogath-tank-engine",
+        "title": "坦克引擎生命成长",
+        "requiredAugments": ["坦克引擎"],
+        "tier": "S",
+        "items": [{ "id": 3084, "name": "心之钢" }],
+        "note": "心之钢配合大招层数和坦克引擎，可以同时提高生命值、承伤和近身伤害。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/combo/augment/tank-engine/"
+      }
+    ],
+    "lucian": [
+      {
+        "id": "lucian-jeweled-gauntlet",
+        "title": "珠光护手大招暴击",
+        "requiredAugments": ["珠光护手"],
+        "synergyAugments": ["易损"],
+        "tier": "S+",
+        "items": [{ "id": 3031, "name": "无尽之刃" }, { "id": 6694, "name": "赛瑞尔达的怨恨" }],
+        "note": "无尽之刃放大大招暴击；易损同时出现时收益更高。对面机动性高时用赛瑞尔达的怨恨帮助大招持续命中。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/build/lucian/"
+      }
+    ],
+    "smolder": [
+      {
+        "id": "smolder-jeweled-gauntlet",
+        "title": "珠光护手 Q 暴击成长",
+        "requiredAugments": ["珠光护手"],
+        "tier": "S",
+        "items": [{ "id": 3508, "name": "夺萃之镰" }, { "id": 3031, "name": "无尽之刃" }],
+        "note": "珠光护手提高 Q 的暴击收益；夺萃之镰解决技能和法力循环，无尽之刃放大后期百分比伤害。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/combo/augment/jeweled-gauntlet/"
+      }
+    ],
+    "gangplank": [
+      {
+        "id": "gangplank-mystic-punch",
+        "title": "秘术冲拳 Q 循环",
+        "requiredAugments": ["秘术冲拳"],
+        "tier": "S",
+        "items": [{ "id": 2510, "name": "黄昏与黎明" }],
+        "note": "Q 可以持续触发普攻减冷却；黄昏与黎明让 Q 更容易触发额外命中和耀光类伤害。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/augments/mystic-punch/"
+      }
+    ],
+    "viego": [
+      {
+        "id": "viego-jeweled-gauntlet",
+        "title": "珠光护手暴击穿透",
+        "requiredAugments": ["珠光护手"],
+        "tier": "S",
+        "items": [{ "id": 6676, "name": "收集者" }, { "id": 3031, "name": "无尽之刃" }],
+        "note": "放弃传统的单一持续输出路线，利用珠光护手把 Q/R 的爆发、暴击和收割集中起来。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/combo/augment/jeweled-gauntlet/"
+      }
+    ],
+    "brand": [
+      {
+        "id": "brand-jeweled-gauntlet",
+        "title": "珠光护手持续伤害暴击",
+        "requiredAugments": ["珠光护手"],
+        "synergyAugments": ["易损"],
+        "tier": "S",
+        "items": [{ "id": 4645, "name": "影焰" }, { "id": 6653, "name": "兰德里的折磨" }],
+        "note": "易损和珠光护手同时出现时，持续伤害也能吃到更高的暴击收益；影焰与兰德里的折磨负责维持双持续伤害。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/combo/augment/jeweled-gauntlet/"
+      }
+    ],
+    "vayne": [
+      {
+        "id": "vayne-fan-the-hammer",
+        "title": "连拨击锤多重命中",
+        "requiredAugments": ["连拨击锤"],
+        "synergyAugments": ["双刀流", "踢踏舞"],
+        "tier": "S+",
+        "items": [{ "id": 3085, "name": "卢安娜的飓风" }],
+        "note": "连拨击锤让一次普攻产生多次命中，配合双刀流、踢踏舞和卢安娜的飓风可以快速触发银弩层数；对面前排多时不要照搬。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/combo/champion/vayne/"
+      }
+    ],
+    "shyvana": [
+      {
+        "id": "shyvana-double-tap",
+        "title": "双发快射特效路线",
+        "requiredAugments": ["双发快射"],
+        "tier": "S",
+        "items": [{ "id": 3091, "name": "智慧末刃" }, { "id": 2510, "name": "黄昏与黎明" }],
+        "note": "双发快射让暴击普攻再次触发攻击特效，先出智慧末刃，再用黄昏与黎明放大额外命中。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/combo/shyvana-%E6%9A%B4%E5%87%BB%E7%89%B9%E6%95%88%E6%B5%81/"
+      }
+    ],
+    "kaisa": [
+      {
+        "id": "kaisa-mystic-punch",
+        "title": "秘术冲拳无限导弹",
+        "requiredAugments": ["秘术冲拳"],
+        "tier": "S",
+        "items": [{ "id": 3085, "name": "卢安娜的飓风" }, { "id": 2510, "name": "黄昏与黎明" }],
+        "note": "卢安娜的飓风分裂箭也能触发秘术冲拳，配合黄昏与黎明让 Q 的冷却大幅缩短。",
+        "sourceType": "公开编辑攻略",
+        "source": "https://arammayhem.com/augments/mystic-punch/"
+      }
+    ]
+  }
+}

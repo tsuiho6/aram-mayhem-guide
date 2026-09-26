@@ -17,6 +17,19 @@
 /** @typedef {string|BuildItem} BuildItemRef */
 
 /**
+ * @typedef {Object} AugmentBuildGuide
+ * @property {string} id
+ * @property {string} title
+ * @property {string[]} requiredAugments
+ * @property {string[]} [synergyAugments]
+ * @property {string} tier
+ * @property {BuildItemRef[]} items
+ * @property {string} note
+ * @property {string} sourceType
+ * @property {string} source
+ */
+
+/**
  * @typedef {Object} HeroStats
  * @property {string} winRate
  * @property {string} pickRate
