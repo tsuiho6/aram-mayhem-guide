@@ -676,6 +676,99 @@ Object.entries(championIds).forEach(([heroId, championId]) => {
   assets.championUrls[heroId] = communityDragonUrl;
   assets.championFallbackUrls[heroId] = communityDragonUrl;
 });
+
+const itemGuidance = {
+  3020: ["法术穿透", "对手堆魔抗或需要提高技能伤害时，先用穿透把伤害打实。"],
+  3026: ["复活容错", "这件装备给进场英雄一次重新站起来的机会，适合敌方爆发高的局。"],
+  3031: ["暴击伤害", "暴击路线已经成型时提高普攻上限，适合队伍能保护你的对局。"],
+  3032: ["持续普攻", "补足攻击力和暴击收益，让远程英雄在安全距离持续输出。"],
+  3036: ["百分比穿甲", "对方护甲较高或前排较多时，提高物理伤害穿透效率。"],
+  3053: ["护盾与韧性", "进场后容易被集火时提供一次缓冲，避免刚接触就被秒杀。"],
+  3065: ["魔抗与治疗", "对手魔法伤害或己方治疗、护盾较多时，把回复转成更高的有效生命。"],
+  3068: ["近身灼烧", "需要贴住多人持续作战时补充范围伤害，减少纯肉没有输出的问题。"],
+  3071: ["破甲与技能急速", "长时间打前排或队伍物理伤害充足时，持续削弱目标护甲。"],
+  3072: ["吸血续航", "对手消耗频繁但控制不密集时，提高边缘输出和残血回城前的续航。"],
+  3075: ["护甲与反普攻", "对面普攻、暴击或多名物理英雄较多时，降低正面换血成本。"],
+  3078: ["综合面板与强化普攻", "需要同时补伤害、生命和技能循环时作为稳定的主线装备。"],
+  3083: ["高生命回复", "被远程消耗后能快速回满，适合队伍缺前排且需要反复接战的局。"],
+  3084: ["生命值成长", "可以安全近身并持续叠层时提供成长上限，但不要在无法接触敌人的局硬出。"],
+  3085: ["多目标普攻", "敌方站位密集或需要同时处理兵线和英雄时，提高范围输出效率。"],
+  3087: ["清线与连锁伤害", "对手远程消耗或兵线压力大时，先用范围伤害争取推线和接战空间。"],
+  3089: ["法强放大", "已有稳定技能命中和穿透后，进一步放大整套法术伤害。"],
+  3091: ["攻速与魔抗", "对手有魔法伤害且你仍需持续普攻时，兼顾输出和生存。"],
+  3107: ["群体治疗", "对手爆发或消耗强时为队伍提供第二个生命池，适合保护型路线。"],
+  3110: ["护甲与降攻速", "对方依赖普攻或暴击时，降低其持续输出并提高自己的技能循环。"],
+  3115: ["攻速与法强特效", "普攻能稳定触发特效时，把攻速转成更高的持续伤害。"],
+  3116: ["生命值灼烧", "战斗时间越长收益越高，适合处理前排或持续压制无法快速脱战的目标。"],
+  3118: ["减速与持续法伤", "需要留住目标或限制敌方突进路线时，把技能命中转成更稳定的控制。"],
+  3135: ["百分比法穿", "对手魔抗较高或前排较多时，避免法强堆高却打不出有效伤害。"],
+  3139: ["解控与保命", "对手关键控制决定团战胜负时，用主动解控换取持续输出时间。"],
+  3142: ["移速与穿甲", "对面远程消耗或需要绕侧翼时，提高接近和脱离的成功率。"],
+  3143: ["护甲与暴击减伤", "敌方暴击和物理爆发明显时，优先降低第一轮伤害。"],
+  3153: ["百分比伤害与续航", "对面生命值高、前排多或需要长时间普攻时，持续削减目标血量。"],
+  3157: ["不可选中", "敌方强开或爆发会打断你的输出时，用短暂无敌拖过关键技能。"],
+  3161: ["技能急速与技能伤害", "技能循环决定输出时提高施法频率，适合持续消耗和反复接战。"],
+  3190: ["群体护盾", "队伍需要一起顶过爆发或推进时，为多人争取第一轮生存空间。"],
+  3302: ["持续普攻穿透", "需要同时打前排和后排时，提高普攻对不同护甲目标的稳定性。"],
+  3508: ["暴击与技能资源", "技能和普攻都要频繁使用时，补足资源循环并保持输出。"],
+  3748: ["范围清线与吸血", "近战需要快速清线或同时打多个目标时，提高持续接战能力。"],
+  4401: ["魔抗与移速", "对手魔法消耗持续且你需要接近时，减少被风筝的时间。"],
+  4628: ["远程伤害放大", "技能能在安全距离持续命中时，提高消耗和先手伤害。"],
+  4645: ["灼烧与法术强度", "技能持续命中或敌方前排较多时，把法术伤害转成更高的长线压力。"],
+  4646: ["法穿与低血爆发", "对手脆皮多或需要收割残血时，提高低生命目标的终结能力。"],
+  6655: ["范围爆发", "需要远程清线和消耗时提供额外爆发，适合不方便长时间普攻的法师。"],
+  6672: ["持续对前排", "普攻频率高且需要处理高生命目标时，把输出集中到前排身上。"],
+  6675: ["暴击技能急速", "暴击路线同时依赖技能循环时，提高第二轮技能和普攻频率。"],
+  6676: ["穿甲收割", "敌方脆皮较多且你有稳定收割机会时，提高残血终结确定性。"],
+  6610: ["群体治疗与护盾", "队伍有多个持续输出点时，把你的技能转成更高的团队续航。"],
+  6614: ["强化队友输出", "己方有依赖攻速或法强的核心时，将辅助资源转成团队伤害。"],
+  6692: ["低血增伤与回复", "需要在残血边缘持续作战时提高反打能力，但要避免被瞬间击杀。"],
+  6665: ["双抗成长", "混合伤害或长时间正面作战时，提供比单一抗性更稳定的承伤。"],
+};
+
+const retiredAugmentNames = {
+  "transmute: gold": "质变：黄金阶",
+  "steel your heart": "钢化你心",
+  "ultra hydra": "究极九头蛇",
+  "upgrade ravenous hydra": "升级：贪欲九头蛇",
+  "wooglet's witchcap": "沃格勒特的巫师帽",
+  "upgrade death's dance": "升级：死亡之舞",
+  "pandora's box": "潘多拉的盒子",
+  "ult bot": "大绝电脑",
+  flashy: "闪光侠",
+  "can't touch this": "你摸不到",
+  "urf's champion": "海牛阿福的勇士",
+  "spell split": "法术迸裂",
+  bolstered: "能力强化",
+  "icathia's fall": "艾卡西亚的陷落",
+  "upgrade sundered sky": "升级：焚天",
+  "veil of warding": "守护面纱",
+  rejuvenation: "活力焕发",
+  "mountain soul": "山脉龙魂",
+  earthwake: "大地觉醒",
+  "upgrade sword of blossoming dawn": "升级：破晓绽放之剑",
+};
+
+const scenarioContext = {
+  frontline: "对面前排较多，优先让输出能穿过生命值和抗性。",
+  burst: "对面爆发较高，优先保证第一轮技能后还能继续作战。",
+  control: "对面控制较多，优先提高解控、容错或不被第一时间限制的能力。",
+  poke: "对面远程消耗较强，优先提高接近、续航和安全输出距离。",
+};
+
+/** @param {BuildItemRef} item @param {import("./types.js").SituationRoute} situation */
+function scenarioItemReason(item, situation) {
+  const id = typeof item === "object" ? item.id : itemIds[item];
+  const guidance = itemGuidance[id];
+  const effect = guidance?.[0] || "补足这条路线的核心属性";
+  const reason = guidance?.[1] || scenarioContext[situation.id] || "根据当前对局威胁补足有效属性。";
+  return `<strong>作用：${effect}</strong><small>原因：${reason}</small>`;
+}
+
+/** @param {BuildItemRef} item @param {import("./types.js").SituationRoute} situation */
+function scenarioItemMarkup(item, situation) {
+  return `<article class="scenario-item-card">${itemMarkup(item)}<div class="scenario-item-reason">${scenarioItemReason(item, situation)}</div></article>`;
+}
 const heroList = document.querySelector("#heroList");
 const detailPanel = document.querySelector("#detailPanel");
 const resultCount = document.querySelector("#resultCount");
@@ -835,7 +928,7 @@ function renderScenario() {
     <div class="scenario-result-top"><span class="eyebrow">RECOMMENDATION</span><span class="status-pill">${sourceStatus}</span></div>
     <h3>${hero.name} · ${situation.label}</h3>
     <p>${situation.note}</p>
-    <div class="scenario-items">${situation.items.map(itemMarkup).join("")}</div>
+    <div class="scenario-items">${situation.items.map((item) => scenarioItemMarkup(item, situation)).join("")}</div>
     <small>${hero.dataState === "统计快照" ? "装备来自英雄专属统计；情境标签用于帮助你在对局中从统计候选池做决策。" : "正式版本将补充装备 ID、样本量和数据来源。"}</small>
   `;
   bindAssetFallbacks();
@@ -846,9 +939,18 @@ async function hydrateAssets() {
     const versions = await fetch("https://ddragon.leagueoflegends.com/api/versions.json").then((response) => response.json());
     const version = versions[0];
     const baseUrl = `https://ddragon.leagueoflegends.com/cdn/${version}`;
-    const itemData = await fetch(`${baseUrl}/data/zh_CN/item.json`).then((response) => response.json());
+    const [itemData, championData] = await Promise.all([
+      fetch(`${baseUrl}/data/zh_CN/item.json`).then((response) => response.json()),
+      fetch(`${baseUrl}/data/zh_CN/champion.json`).then((response) => response.json()),
+    ]);
     assets.baseUrl = baseUrl;
     heroes.forEach((hero) => {
+      const championInfo = championData.data[championKeys[hero.id]];
+      if (championInfo) {
+        // Data Dragon 国服数据中，title 是英雄名，name 是称号。
+        hero.name = simplifyText(championInfo.title || championInfo.name || hero.name);
+        hero.alias = simplifyText(championInfo.name || hero.alias);
+      }
       assets.championUrls[hero.id] = `${baseUrl}/img/champion/${championKeys[hero.id]}.png`;
       assets.championFallbackUrls[hero.id] = championIds[hero.id]
         ? `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${championIds[hero.id]}.png`
@@ -863,6 +965,7 @@ async function hydrateAssets() {
     });
     renderHeroList();
     renderDetail();
+    renderScenarioHeroOptions();
     renderScenario();
   } catch (error) {
     console.info("游戏图标加载失败，保留文字 fallback。", error);
@@ -871,11 +974,23 @@ async function hydrateAssets() {
 
 async function hydrateGuideData() {
   try {
-    const payload = await fetch("./data/aram-mayhem-26.19.json").then((response) => response.json());
+    const [payload, localization] = await Promise.all([
+      fetch("./data/aram-mayhem-26.19.json").then((response) => response.json()),
+      fetch("./data/zh-cn-localization.json").then((response) => response.json()),
+    ]);
+    const augmentNames = localization.entries || {};
+    const localizeAugment = (augment) => {
+      const normalized = simplifyData(augment);
+      const key = String(normalized.nameEn || "").toLowerCase();
+      return { ...normalized, name: augmentNames[key] || retiredAugmentNames[key] || normalized.name };
+    };
     heroes.forEach((hero) => {
       const sourceHero = simplifyData(payload.champions[hero.id]);
       if (!sourceHero) return;
-      Object.assign(hero, sourceHero, { dataState: "统计快照", alias: hero.alias });
+      sourceHero.coreAugments = (sourceHero.coreAugments || []).map(localizeAugment);
+      const displayName = hero.name;
+      const displayAlias = hero.alias;
+      Object.assign(hero, sourceHero, { dataState: "统计快照", name: displayName, alias: displayAlias });
       championIds[hero.id] = sourceHero.sourceId;
       const communityDragonUrl = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${sourceHero.sourceId}.png`;
       assets.championUrls[hero.id] = assets.championUrls[hero.id] || communityDragonUrl;
@@ -885,12 +1000,15 @@ async function hydrateGuideData() {
     augmentRankings = groups.flatMap((color) => payload.augments
       .filter((augment) => augment.rarity === color)
       .sort((left, right) => Number.parseFloat(right.winRate) - Number.parseFloat(left.winRate))
-      .map((augment, index) => ({
-        ...simplifyData(augment),
-        color,
-        rank: index + 1,
-        tierClass: augment.strength === "SS" ? "" : augment.strength === "S" ? "violet" : augment.strength === "A" ? "gold" : "pink",
-      })));
+      .map((augment, index) => {
+        const localized = localizeAugment(augment);
+        return {
+          ...localized,
+          color,
+          rank: index + 1,
+          tierClass: augment.strength === "SS" ? "" : augment.strength === "S" ? "violet" : augment.strength === "A" ? "gold" : "pink",
+        };
+      }));
     renderHeroList();
     renderDetail();
     renderAugments();

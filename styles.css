@@ -143,10 +143,10 @@ button { cursor: pointer; }
 .detail-footnote { margin-top: 18px; padding: 10px 11px; border-left: 2px solid var(--gold); color: #bcb9b0; background: rgba(233,190,105,.06); font-size: 11px; line-height: 1.6; }
 
 .augment-group { display: grid; gap: 8px; }
-.augment-group-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; color: var(--muted); font-size: 11px; }
+.augment-group-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; color: var(--muted); font-size: 13px; }
 .augment-group-heading > div { display: flex; align-items: center; gap: 8px; }
-.augment-group-heading strong { color: var(--text); font-size: 13px; font-weight: 500; }
-.augment-group-heading small { color: var(--faint); font-size: 10px; }
+.augment-group-heading strong { color: var(--text); font-size: 15px; font-weight: 500; }
+.augment-group-heading small { color: var(--faint); font-size: 11px; }
 .augment-tabs { display: flex; gap: 8px; margin-bottom: 10px; }
 .augment-tab { display: flex; align-items: center; gap: 7px; padding: 9px 13px; border: 1px solid var(--line); border-radius: 6px; color: var(--muted); background: var(--surface); text-align: left; }
 .augment-tab:hover, .augment-tab.active { border-color: var(--line-strong); color: var(--text); background: var(--surface-2); }
@@ -158,14 +158,14 @@ button { cursor: pointer; }
 .color-badge.silver { color: #e8edf2; background: #74869c; }
 .augment-table { display: grid; }
 .augment-head, .augment-row { display: grid; grid-template-columns: 48px minmax(150px, .9fr) minmax(90px, .45fr) minmax(300px, 1.5fr); align-items: center; gap: 12px; }
-.augment-head { min-height: 39px; padding: 0 16px; border-bottom: 1px solid var(--line); color: var(--faint); font-size: 10px; }
-.augment-row { min-height: 66px; padding: 10px 16px; border-bottom: 1px solid var(--line); }
+.augment-head { min-height: 46px; padding: 0 18px; border-bottom: 1px solid var(--line); color: var(--faint); font-size: 12px; }
+.augment-row { min-height: 82px; padding: 13px 18px; border-bottom: 1px solid var(--line); gap: 14px; }
 .augment-row:last-child { border-bottom: 0; }
-.augment-name strong { font-size: 12px; }
-.augment-name small, .augment-copy small { margin-top: 4px; color: var(--muted); font-size: 10px; }
-.augment-copy strong { color: var(--text); font-size: 10px; font-weight: 500; }
+.augment-name strong { font-size: 14px; }
+.augment-name small, .augment-copy small { margin-top: 4px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.augment-copy strong { color: var(--text); font-size: 12px; font-weight: 500; }
 .augment-copy strong.fit-heroes { display: flex; flex-wrap: wrap; gap: 4px; }
-.fit-heroes em { padding: 3px 5px; border-radius: 3px; color: var(--cyan); background: rgba(103,217,238,.08); font-size: 9px; font-style: normal; }
+.fit-heroes em { padding: 4px 6px; border-radius: 3px; color: var(--cyan); background: rgba(103,217,238,.08); font-size: 11px; font-style: normal; }
 
 .scenario-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 16px; }
 .scenario-controls, .scenario-result { padding: 18px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); }
@@ -185,7 +185,12 @@ button { cursor: pointer; }
 .scenario-result { min-height: 184px; background: linear-gradient(135deg, rgba(24,47,65,.9), rgba(16,27,43,.95)); }
 .scenario-result h3 { margin: 18px 0 8px; font-size: 19px; }
 .scenario-result p { margin: 0; max-width: 660px; color: var(--muted); font-size: 12px; line-height: 1.7; }
-.scenario-items { display: flex; flex-wrap: wrap; gap: 6px; margin: 19px 0 14px; }
+.scenario-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px; margin: 19px 0 14px; }
+.scenario-item-card { min-height: 120px; padding: 10px; border: 1px solid rgba(103,217,238,.22); border-radius: 5px; background: rgba(9,18,31,.46); }
+.scenario-item-card > .item-chip { margin-bottom: 8px; }
+.scenario-item-reason { display: grid; gap: 4px; }
+.scenario-item-reason strong { color: var(--text); font-size: 11px; }
+.scenario-item-reason small { color: var(--muted); font-size: 10px; line-height: 1.55; }
 .scenario-items .item-chip { padding: 5px 7px; border: 1px solid rgba(103,217,238,.25); border-radius: 4px; font-size: 10px; }
 .scenario-items .item-chip img, .scenario-items .item-placeholder { width: 20px; height: 20px; }
 .scenario-result > small { color: var(--faint); font-size: 9px; }
